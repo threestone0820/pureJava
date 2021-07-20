@@ -1,12 +1,10 @@
 package three.stone.redis;
 
-import io.lettuce.core.RedisFuture;
-
-import java.lang.reflect.Method;
+import java.util.List;
 import java.util.concurrent.CompletionStage;
 
 public interface RedisCommandExecutor {
-    CompletionStage<Object> executeCommand(RedisCommand redisCommand);
+    CompletionStage<?> executeCommands(List<RedisCommand> redisCommand);
 
     void handleException(Throwable e);
 }

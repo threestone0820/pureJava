@@ -23,7 +23,7 @@
         </Console>
 
         <RollingFile name="rollingFile" fileName="${log_home}${service_name}.${service_shard}.log"
-                     filePattern="{log_home}${service_name}.${service_shard}.log.%d{yyyy-MM-dd HH}">
+                     filePattern="${log_home}${service_name}.${service_shard}.log.%d{yyyy-MM-dd HH}">
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
             </Policies>

@@ -1,6 +1,8 @@
 package three.stone.base;
 
 import io.netty.util.concurrent.ScheduledFuture;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +10,8 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class ExpiringHeap<V extends ExpiringItem> {
+    private Logger logger = LogManager.getLogger();
+
     private ArrayList<V> heap = new ArrayList<>();
     private Map<Long, V> map = new HashMap<>();
     private ScheduledFuture<?> scheduledFuture;
@@ -28,13 +32,14 @@ public class ExpiringHeap<V extends ExpiringItem> {
 
         int position = removed.getPosition();
         V moved = heap.remove(heap.size() - 1);
-        if (heap.size() > 0) {
+        if (heap.size() > position) {
             if (removed.expiration() < moved.expiration()) {
                 moveDown(moved, position);
             } else {
                 moveUp(moved, position);
             }
         }
+        logger.info("removed:{} heap.size:{}", removed, heap.size());
     }
 
     public int expireItems(long expiration) {

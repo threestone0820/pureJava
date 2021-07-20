@@ -1,14 +1,15 @@
 package three.stone.redis;
 
 import io.lettuce.core.RedisFuture;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import three.stone.base.VarHolder;
 import three.stone.exception.Exceptions;
 import three.stone.exception.WrapNonRuntimeException;
 
-import java.util.Optional;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 
 public class RedisCommandRetryer {
     Logger logger = LogManager.getLogger();
@@ -18,26 +19,30 @@ public class RedisCommandRetryer {
         this.executor = executor;
     }
 
-    public RedisFuture<Object> executeRedisCommandWithRetry(RedisCommand redisCommand) {
+    public RedisFuture<Object> executeRedisCommandWithRetry(List<RedisCommand> redisCommands) {
         RedisFutureHelper<Object> future = new RedisFutureHelper<>();
+        CompletionStage<Object> stage = (CompletionStage<Object>) executor.executeCommands(redisCommands);
 
-        executor.executeCommand(redisCommand)
-                .thenApply(result -> Pair.of(Optional.of(result), Optional.empty()))
-                .exceptionally(e -> Pair.of(Optional.empty(), Optional.of(e)))
-                .thenCompose(pair -> {
-                    if (pair.getLeft().isPresent()) {
-                        return CompletableFuture.completedFuture(pair.getLeft().get());
+        VarHolder<Throwable> exceptionHolder = new VarHolder<>();
+        stage.thenApply(result -> result)
+                .exceptionally(throwable -> {
+                    exceptionHolder.setValue(throwable);
+                    return null;
+                })
+                .thenCompose(result -> {
+                    if (exceptionHolder.getValue() == null) {
+                        return CompletableFuture.completedFuture(result);
                     } else {
-                        Throwable e = WrapNonRuntimeException.unWrap((Throwable) pair.getRight().get());
-                        handleException(e, 1);
-                        return executor.executeCommand(redisCommand);
+                        Throwable t = WrapNonRuntimeException.unWrap(exceptionHolder.getValue());
+                        handleException(t, 1);
+                        return (CompletionStage<Object>) executor.executeCommands(redisCommands);
                     }
                 })
-                .whenComplete((result, e) -> {
-                    if (null == e) {
+                .whenComplete((result, t) -> {
+                    if (null == t) {
                         future.complete(result);
                     } else {
-                        Throwable unWrapped = WrapNonRuntimeException.unWrap(e);
+                        Throwable unWrapped = WrapNonRuntimeException.unWrap(t);
                         handleException(unWrapped, 2);
                         future.completeExceptionally(unWrapped);
                     }

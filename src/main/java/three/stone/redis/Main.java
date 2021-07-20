@@ -1,28 +1,30 @@
 package three.stone.redis;
 
 import io.lettuce.core.codec.StringCodec;
-import three.stone.exception.WrapNonRuntimeException;
+
+import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
-        RedisAsyncClientApi<String, String> connection = AsyncRedisProxy.create("172.23.172.105", 6379, new StringCodec());
-        connection.set("test_key", "test_value")
-                .thenApply(result -> {
-                    System.out.println("set result " + result);
-                    connection.get("test_key")
-                            .thenAccept(value -> {
-                                System.out.println("get result " + value);
-                            });
+    public static void main(String[] args) throws InterruptedException, IOException {
+        RedisAsyncClientApi<String, String> connection = RedisAsyncProxy.create("172.23.172.105", 6379, new StringCodec());
+        RedisTransactionApi<String, String> transaction = connection.transaction();
+        transaction.get("test_key");
+        transaction.set("test_key", "dummy_value2");
+        transaction.get("test_key");
+
+        transaction.execute()
+                .thenApply(results -> {
+                    String o1 = results.get(0);
+                    String o2 = results.get(1);
+                    String o3 = results.get(2);
+                    System.out.println(o1);
+                    System.out.println(o2);
+                    System.out.println(o3);
                     return null;
-                })
-                .exceptionally(e -> {
-                    System.out.println(e);
-                    throw new WrapNonRuntimeException(e);
                 });
 
-        while (true) {
-            Thread.sleep(10000);
-            break;
+        if (System.in.read() < 10) {
+
         }
     }
 }

@@ -1,58 +1,36 @@
 package three.stone.redis;
 
-import io.lettuce.core.RedisFuture;
 import io.lettuce.core.api.async.RedisAsyncCommands;
-import three.stone.base.AsyncUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 
-public class RedisPipelineProxy<K, V> implements InvocationHandler {
-    private List<RedisCommand> commands;
-    private AsyncRedisProxy<K, V> baseProxy;
+public class RedisPipelineProxy<K, V> extends RedisAsyncBaseCommandsGroupProxy<K, V> {
+    private Logger logger = LogManager.getLogger();
 
-    public RedisPipelineProxy(AsyncRedisProxy<K, V> baseProxy) {
-        this.commands = new ArrayList<>();
-        this.baseProxy = baseProxy;
+    public static <K, V> RedisPipelineApi<K, V> create(RedisAsyncProxy<K, V> baseProxy) {
+        return RedisAsyncProxy.createFromInvocationHandler(new RedisPipelineProxy<>(baseProxy),
+                RedisPipelineApi.class);
+    }
+
+    public RedisPipelineProxy(RedisAsyncProxy<K, V> baseProxy) {
+        super(baseProxy);
     }
 
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        checkCommand(method);
-        if (method.getDeclaringClass().isAssignableFrom(RedisAsyncCommands.class)) {
-            commands.add(new RedisCommand(method, args));
-        }
-
-        return executeCommands();
-    }
-
-    public CompletionStage<List<Object>> executeCommands() {
+    protected CompletionStage<?> executeCommands(RedisAsyncCommands<K, V> redisAsyncCommands, List<RedisCommand> commands) {
         if (commands.isEmpty()) {
             return CompletableFuture.completedFuture(new ArrayList<>());
         }
 
-        return baseProxy.getRedisCommands()
-                .thenCompose(redisCommands -> {
-                    redisCommands.setAutoFlushCommands(false);
-                    List<CompletionStage<Object>> stages = new ArrayList<>();
-                    commands.stream()
-                            .forEach(command -> stages.add(baseProxy.executeCommand(command)));
-                    redisCommands.flushCommands();
-                    redisCommands.setAutoFlushCommands(true);
-                    return AsyncUtils.join(stages);
-                });
+        redisAsyncCommands.setAutoFlushCommands(false);
+        CompletionStage<List<Object>> stages = baseProxy.executeCommands(redisAsyncCommands, commands);
+        redisAsyncCommands.flushCommands();
+        redisAsyncCommands.setAutoFlushCommands(true);
+        return stages;
     }
-
-    private void checkCommand(Method method) {
-        Class<?> clazz = method.getDeclaringClass();
-        if (!(clazz.isAssignableFrom(RedisPipelineApi.class))) {
-            throw new RuntimeException("illegal command, " + method.getName());
-        }
-    }
-
-
 }

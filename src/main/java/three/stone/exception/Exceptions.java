@@ -16,4 +16,9 @@ public class Exceptions {
         e.printStackTrace(new PrintStream(outputStream));
         return outputStream.toString();
     }
+
+    public static Throwable safeGetCause(Throwable e) {
+        Throwable cause = e.getCause();
+        return cause == null ? e : cause;
+    }
 }
