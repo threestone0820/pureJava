@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info" name="pure-java" packages="three.stone" shutdownHook="disable">
+    <Properties>
+        <Property name="log_home">/Users/qiulei/programing/logs/</Property>
+        <Property name="service_name">PureJava</Property>
+        <Property name="service_shard">0</Property>
+    </Properties>
+
+    <Appenders>
+<!--        <Syslog name="syslog" facility="LOCAL1" format="RFC5424" host="localhost"-->
+<!--                port="514" protocol="UDP" mdcId="mdc" appName="${sys:service_name}.${sys:service_shard}"-->
+<!--                immediateFlush="true">-->
+<!--            <LoggerFields>-->
+<!--                <KeyValuePair key="formatted_msg" value="%level{WARN=WARNING, FATAL=CRITICAL} %d{yyyy-MM-dd HH:mm:ss.SSS} %file:%method:%line"/>-->
+<!--            </LoggerFields>-->
+<!--        </Syslog>-->
+<!--        <ErrorMonitorBus name="error-monitor-bus">-->
+<!--            <ThresholdFilter level="WARN" onMismatch="DENY" />-->
+<!--        </ErrorMonitorBus>-->
+
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+        </Console>
+
+        <RollingFile name="rollingFile" fileName="${log_home}${service_name}.${service_shard}.log"
+                     filePattern="{log_home}${service_name}.${service_shard}.log.%d{yyyy-MM-dd HH}">
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+        </RollingFile>
+
+
+        <Async name="AsyncAppender">
+            <AppenderRef ref="rollingFile"/>
+        </Async>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="three.stone" level="info" additivity="true">
+          <AppenderRef ref="rollingFile"/>
+        </Logger>
+        <Root level="debug" additivity="false">
+          <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>
