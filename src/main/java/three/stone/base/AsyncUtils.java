@@ -3,7 +3,6 @@ package three.stone.base;
 import com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +11,16 @@ import java.util.concurrent.CompletionStage;
 import java.util.stream.Collectors;
 
 public class AsyncUtils {
+
+    public static <T> CompletionStage<List<T>> allOf(List<CompletionStage<T>> stages) {
+        List<CompletableFuture<T>> futures = stages
+                .stream()
+                .map(CompletionStage::toCompletableFuture)
+                .collect(Collectors.toList());
+        CompletableFuture<T>[] array = futures.stream().toArray(CompletableFuture[]::new);
+        return CompletableFuture.allOf(array).thenApply(aVoid ->
+                futures.stream().map(CompletableFuture::join).collect(Collectors.toList()));
+    }
 
     public static <T> CompletionStage<List<T>> join(List<CompletionStage<T>> stages) {
         CompletionStage<List<T>> joinedStage = CompletableFuture.completedFuture(new ArrayList<>());
@@ -39,15 +48,8 @@ public class AsyncUtils {
         return result;
     }
 
-    public static <T> CompletionStage<List<T>> allOf(List<CompletionStage<T>> stages) {
-        List<CompletableFuture<T>> futures = stages.stream().map(t -> t.toCompletableFuture()).collect(Collectors.toList());
-        CompletableFuture<T>[] array = futures.stream().toArray(CompletableFuture[]::new);
-        return CompletableFuture.allOf(array).thenApply(aVoid ->
-                futures.stream().map(future -> future.join()).collect(Collectors.toList()));
-    }
-
     public static <T> CompletionStage<T> anyOf(List<CompletionStage<T>> stages) {
-        CompletableFuture[] array = stages.stream()
+        CompletableFuture<T>[] array = stages.stream()
                 .map(CompletionStage::toCompletableFuture)
                 .toArray(CompletableFuture[]::new);
         return CompletableFuture.anyOf(array)
