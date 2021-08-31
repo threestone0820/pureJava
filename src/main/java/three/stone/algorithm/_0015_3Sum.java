@@ -45,9 +45,13 @@ public class _0015_3Sum {
                         int second = nums[low];
                         int third = nums[high];
                         result.add(Arrays.asList(nums[i], second, third));
+
+                        // 去重
                         while (low < high && second == nums[low]) {
                             low++;
                         }
+
+                        // 去重
                         while (low < high && third == nums[high]) {
                             high--;
                         }
@@ -61,9 +65,5 @@ public class _0015_3Sum {
         }
 
         return result;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(threeSum(new int[] {-1,0,1,2,-1,-4}));
     }
 }

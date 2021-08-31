@@ -2,6 +2,7 @@ package three.stone.algorithm;
 
 /**
  * Given a string s, return the longest palindromic substring in s.
+ *
  * Example 1:
  *
  * Input: s = "babad"
@@ -20,21 +21,21 @@ package three.stone.algorithm;
  * Input: s = "ac"
  * Output: "a"
  */
-public class _0012_Longest_Palindromic_Substring {
+public class _0005_Longest_Palindromic_Substring {
     public String longestPalindrome(String s) {
-        int length = s.length();
-        if (length < 2) {
+        if (null == s || s.length() <= 1) {
             return s;
         }
-
+        int length = s.length();
         String result = "";
         boolean[][] dp = new boolean[length][length];
-        for (int j = 0; j < length; j++) {
-            for (int i = 0; i <= j; i++) {
-                // 寻找如何从最优子集推断
-                dp[i][j] = (s.charAt(i) == s.charAt(j)) && (j - i <= 2 || dp[i + 1][j - 1]);
-                if (dp[i][j] && (j - i + 1) > result.length()) {
-                    result = s.substring(i, j + 1);
+
+        for (int high = 0; high < length; high++) {
+            for (int low = 0; low <= high; low++) {
+                dp[low][high] = s.charAt(low) == s.charAt(high) &&
+                        (high - low <= 2 || dp[low + 1][high - 1]);
+                if (dp[low][high] && high - low + 1 > result.length()) {
+                    result = s.substring(low, high + 1);
                 }
             }
         }

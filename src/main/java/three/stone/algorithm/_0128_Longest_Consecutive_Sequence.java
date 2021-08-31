@@ -1,5 +1,8 @@
 package three.stone.algorithm;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence.
  *
@@ -22,6 +25,26 @@ package three.stone.algorithm;
  */
 public class _0128_Longest_Consecutive_Sequence {
     public int longestConsecutive(int[] nums) {
-        return 0;
+        if (null == nums || nums.length == 0) {
+            return 0;
+        }
+        Set<Integer> set = new HashSet<>();
+        for (int num : nums) {
+            set.add(num);
+        }
+
+        int result = 0;
+        for (Integer i : set) {
+            // awesome idea
+            if (!set.contains(i - 1)) {
+                int current = 0;
+                while (set.contains(i)) {
+                    i++;
+                    current++;
+                }
+                result = Math.max(result, current);
+            }
+        }
+        return result;
     }
 }

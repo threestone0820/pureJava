@@ -26,7 +26,7 @@ package three.stone.algorithm;
  * Follow up: If you have figured out the O(n) solution,
  * try coding another solution of which the time complexity is O(n log(n)).
  */
-public class _209_Minimum_Size_Subarray_Sum {
+public class _0209_Minimum_Size_Subarray_Sum {
     public int minSubArrayLen(int target, int[] nums) {
         if (nums == null || nums.length == 0) {
             return 0;

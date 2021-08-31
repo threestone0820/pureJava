@@ -30,7 +30,7 @@ import java.util.Map;
  * 0 <= strs[i].length <= 100
  * strs[i] consists of lower-case English letters.
  */
-public class __0049_Group_Anagrams {
+public class _0049_Group_Anagrams {
     public List<List<String>> groupAnagrams(String[] strs) {
         Map<String, List<String>> map = new HashMap<>();
         for (String str : strs) {
@@ -41,6 +41,19 @@ public class __0049_Group_Anagrams {
                 map.put(s, new ArrayList<>());
             }
             map.get(s).add(str);
+        }
+        return new ArrayList<>(map.values());
+    }
+
+    public List<List<String>> groupAnagramsII(String[] strs) {
+        if (strs == null || strs.length == 0) return new ArrayList<>();
+        Map<String, List<String>> map = new HashMap<>();
+        for (String s : strs) {
+            char[] ca = new char[26];
+            for (char c : s.toCharArray()) ca[c - 'a']++;
+            String keyStr = String.valueOf(ca);
+            if (!map.containsKey(keyStr)) map.put(keyStr, new ArrayList<>());
+            map.get(keyStr).add(s);
         }
         return new ArrayList<>(map.values());
     }
