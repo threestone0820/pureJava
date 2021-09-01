@@ -5,7 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Given an array nums of n integers, return an array of all the unique quadruplets [nums[a], nums[b], nums[c], nums[d]] such that:
+ * Given an array nums of n integers, return an array of all the unique quadruplets
+ * [nums[a], nums[b], nums[c], nums[d]] such that:
  *
  * 0 <= a, b, c, d < n
  * a, b, c, and d are distinct.
@@ -31,7 +32,7 @@ import java.util.List;
  * -109 <= target <= 109
  */
 public class _0018_4Sum {
-    public static List<List<Integer>> fourSum(int[] nums, int target) {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
         Arrays.sort(nums);
         return nSum(nums, 0, nums.length - 1, target, 4);
     }
@@ -44,6 +45,7 @@ public class _0018_4Sum {
         }
 
         for (int i = low; i < high; i++) {
+            // 去掉重复的
             if (i != low && nums[i] == nums[i - 1]) {
                 continue;
             }
