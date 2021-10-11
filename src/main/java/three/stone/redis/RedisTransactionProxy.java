@@ -1,7 +1,6 @@
 package three.stone.redis;
 
 import io.lettuce.core.api.async.RedisAsyncCommands;
-import sun.tools.jstat.Jstat;
 
 import java.util.Collections;
 import java.util.List;
