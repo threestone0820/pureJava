@@ -23,7 +23,6 @@ public class _0083_Remove_Duplicates_from_Sorted_List {
             }
             q = q.next;
         }
-        //注意最后几个结点值相同的情况...
         p.next = null;
 
         return head;

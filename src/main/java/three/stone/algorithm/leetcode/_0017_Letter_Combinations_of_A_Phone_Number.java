@@ -6,16 +6,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent.
- * Return the answer in any order.
+ * Given a string containing digits from 2-9 inclusive, return all possible letter combinations
+ * that the number could represent. Return the answer in any order.
  *
- * A mapping of digit to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+ * A mapping of digit to letters (just like on the telephone buttons) is given below.
+ * Note that 1 does not map to any letters.
  * 2:abc 3:def 4:ghi 5:jkl 6:mno 7:pqrs 8:tuv 9:wxyz
- * Example 1:
  *
  * Input: digits = "23"
  * Output: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
- * Example 2:
  *
  * Input: digits = ""
  * Output: []
@@ -26,39 +25,34 @@ import java.util.Map;
  */
 public class _0017_Letter_Combinations_of_A_Phone_Number {
     public List<String> letterCombinations(String digits) {
-        if (digits.isEmpty()) {
-            return new ArrayList<>();
-        }
-        Map<Character, String> map = new HashMap<>();
-        map.put('2', "abc");
-        map.put('3', "def");
-        map.put('4', "ghi");
-        map.put('5', "jkl");
-        map.put('6', "mno");
-        map.put('7', "pqrs");
-        map.put('8', "tuv");
-        map.put('9', "wxyz");
-
         List<String> result = new ArrayList<>();
-        List<String> letters = new ArrayList<>();
-        for (char c : digits.toCharArray()) {
-            letters.add(map.get(c));
+        if (digits.isEmpty()) {
+            return result;
         }
-
-        backtrace(result, letters, 0, new StringBuilder());
+        Map<Character, char[]> map = new HashMap<>();
+        map.put('2', new char[] {'a', 'b', 'c'});
+        map.put('3', new char[] {'d', 'e', 'f'});
+        map.put('4', new char[] {'g', 'h', 'i'});
+        map.put('5', new char[] {'j', 'k', 'l'});
+        map.put('6', new char[] {'m', 'n', 'o'});
+        map.put('7', new char[] {'p', 'q', 'r', 's'});
+        map.put('8', new char[] {'t', 'u', 'v'});
+        map.put('9', new char[] {'w', 'x', 'y', 'z'});
+        char[] digitArr = digits.toCharArray();
+        backtrace(map, result, new StringBuilder(), digitArr, 0);
         return result;
     }
 
-    private void backtrace(List<String> result, List<String> letters, int start, StringBuilder builder) {
-        if (start == letters.size()) {
+    private void backtrace(Map<Character, char[]> map, List<String> result, StringBuilder builder, char[] digitArr, int index) {
+        if (index == digitArr.length) {
             result.add(builder.toString());
             return;
         }
 
-        char[] chars = letters.get(start).toCharArray();
-        for (int i = 0; i < chars.length; i++) {
-            builder.append(chars[i]);
-            backtrace(result, letters, start + 1, builder);
+        char[] chars = map.get(digitArr[index]);
+        for (char ch : chars) {
+            builder.append(ch);
+            backtrace(map, result, builder, digitArr, index + 1);
             builder.deleteCharAt(builder.length() - 1);
         }
     }

@@ -11,23 +11,8 @@ package three.stone.algorithm.sliding_window;
  * Explanation: The subarray [4,3] has the minimal length under the problem constraint.
  * Example 2:
  *
- * Input: target = 4, nums = [1,4,4]
- * Output: 1
- * Example 3:
- *
- * Input: target = 11, nums = [1,1,1,1,1,1,1,1]
- * Output: 0
- * Constraints:
- *
- * 1 <= target <= 109
- * 1 <= nums.length <= 105
- * 1 <= nums[i] <= 105
- *
- * Follow up: If you have figured out the O(n) solution,
- * try coding another solution of which the time complexity is O(n log(n)).
  */
 public class Minimum_Size_Subarray_Sum {
-    // accepted
     public int minSubArrayLen(int target, int[] nums) {
         if (null == nums || nums.length == 0) {
             return 0;
@@ -35,15 +20,12 @@ public class Minimum_Size_Subarray_Sum {
 
         int start = 0, end = 0, currentSum = 0, result = Integer.MAX_VALUE;
         while (end < nums.length) {
-            currentSum += nums[end];
-            end++;
+            currentSum += nums[end++];
             while (currentSum >= target) {
                 result = Math.min(result, end - start);
-                currentSum -= nums[start];
-                start++;
+                currentSum -= nums[start++];
             }
         }
-
         return result == Integer.MAX_VALUE ? 0 : result;
     }
 }

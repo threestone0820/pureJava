@@ -2,63 +2,36 @@ package three.stone.algorithm.leetcode;
 
 /**
  * Given a string s, find the length of the longest substring without repeating characters.
- *
- *
- *
  * Example 1:
  *
  * Input: s = "abcabcbb"
  * Output: 3
  * Explanation: The answer is "abc", with the length of 3.
- * Example 2:
- *
- * Input: s = "bbbbb"
- * Output: 1
- * Explanation: The answer is "b", with the length of 1.
- * Example 3:
- *
- * Input: s = "pwwkew"
- * Output: 3
- * Explanation: The answer is "wke", with the length of 3.
- * Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.
- * Example 4:
  *
  * Input: s = ""
  * Output: 0
- *
- *
- * Constraints:
- *
- * 0 <= s.length <= 5 * 104
- * s consists of English letters, digits, symbols and spaces.
  */
 public class _0003_Longest_Substring_Without_Repeating_Characters {
     public int lengthOfLongestSubstring(String s) {
-        int[] chars = new int[127];
-        int start = 0, end = 0, max = Integer.MIN_VALUE;
+        int[] map = new int[128];
 
+        int start = 0, end = 0, maxLen = Integer.MIN_VALUE;
         while (end < s.length()) {
-            while (end < s.length() && chars[s.charAt(end)] == 0) {
-                chars[s.charAt(end)] = 1;
-                end++;
+            char c = s.charAt(end);
+            map[c]++;
+            // end++，一是实现自增遍历，二也是为了下面正确的求长度
+            end++;
+            // 求最大子串时，while循环中的条件是不满足要求的判断
+            // 求最小子串时，while循环中的条件是满足要求的判断
+            while (map[c] > 1) {
+                map[s.charAt(start++)]--;
             }
 
-            max = Math.max(end - start, max);
-            if (end == s.length()) {
-                return max;
+            if (end - start > maxLen) {
+                maxLen = end - start;
             }
-            while (s.charAt(start) != s.charAt(end)) {
-                chars[s.charAt(start)] = 0;
-                start++;
-            }
-            chars[s.charAt(start)] = 0;
-            start++;
         }
 
-        if (max == Integer.MIN_VALUE) {
-            return 0;
-        } else {
-            return max;
-        }
+        return maxLen == Integer.MIN_VALUE ? 0 : maxLen;
     }
 }

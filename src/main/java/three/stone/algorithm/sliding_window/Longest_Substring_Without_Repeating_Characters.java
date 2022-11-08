@@ -3,9 +3,9 @@ package three.stone.algorithm.sliding_window;
 import java.util.Arrays;
 
 /**
- * Given a string s, find the length of the longest substring without repeating characters.
+ * Given a string s, find the length of the longest substring
+ * without repeating characters.
  * Example 1:
- *
  * Input: s = "abcabcbb"
  * Output: 3
  * Explanation: The answer is "abc", with the length of 3.
@@ -32,7 +32,6 @@ import java.util.Arrays;
  * s consists of English letters, digits, symbols and spaces.
  */
 public class Longest_Substring_Without_Repeating_Characters {
-    // accepted
     public static int lengthOfLongestSubstring(String s) {
         int[] counter = new int[128];
         if (s == null || s.isEmpty()) {
@@ -59,10 +58,5 @@ public class Longest_Substring_Without_Repeating_Characters {
         }
 
         return result;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(lengthOfLongestSubstring("abcabcbb"));
-
     }
 }

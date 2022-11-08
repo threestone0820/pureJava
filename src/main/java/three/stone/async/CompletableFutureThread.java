@@ -1,30 +1,38 @@
 package three.stone.async;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class CompletableFutureThread {
+    private static Logger logger = LogManager.getLogger();
     public static void main(String[] args) throws InterruptedException {
-        ExecutorService threadPool = Executors.newFixedThreadPool(2);
-        ExecutorService threadPool2 = Executors.newFixedThreadPool(2);
+        ExecutorService threadPool = Executors.newFixedThreadPool(10);
 
-        CompletableFuture.supplyAsync(() -> {
+        CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println(Thread.currentThread());
+            logger.info("Beijing");
             return "Beijing";
-        }, threadPool).thenApplyAsync(s -> {
-            System.out.println("Apply execute:" + Thread.currentThread());
-            String result = "Hello " + s;
-            System.out.println(result);
-            return result;
-        }, threadPool2);
+        }, threadPool);
 
-        Thread.sleep(2000);
-        System.out.println(Thread.currentThread());
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        future.thenApply(s -> {
+            String result = "hello " + s;
+            logger.info(result);
+            return result;
+        });
+
     }
 }

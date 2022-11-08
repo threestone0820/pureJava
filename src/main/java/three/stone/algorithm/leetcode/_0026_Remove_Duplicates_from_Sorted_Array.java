@@ -46,12 +46,12 @@ public class _0026_Remove_Duplicates_from_Sorted_Array {
             return length;
         }
 
-        int i = 1;
-        for (int j = 1; j < length; j++) {
-            if (nums[j] != nums[j - 1]) {
-                nums[i++] = nums[j];
+        int i = 0, j = 1;
+        for (; j < length; j++) {
+            if (nums[j] != nums[i]) {
+                nums[++i] = nums[j];
             }
         }
-        return i;
+        return i + 1;
     }
 }

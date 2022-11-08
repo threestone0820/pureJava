@@ -80,9 +80,7 @@ public class MQProducerHelper {
     private MQProducerHelper() { }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        while (true) {
-            MQProducerHelper.getInstance().produceMessage(MQConfig.TOPIC_DEMO, "Hello kafka_" + ThreadLocalRandom.current().nextInt(1000));
-            Thread.sleep(1000);
-        }
+        MQProducerHelper.getInstance().produceMessage(MQConfig.TOPIC_DEMO, "Hello kafka_" + ThreadLocalRandom.current().nextInt(1000));
+        Thread.sleep(100000);
     }
 }

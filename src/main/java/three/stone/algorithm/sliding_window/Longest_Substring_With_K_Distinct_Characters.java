@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Problem Statement #
- * Given a string, find the length of the longest substring in it with no more than K distinct characters.
+ * Given a string, find the length of the longest substring in it
+ * with no more than K distinct characters.
  * Example 1:
  * Input: String="araaci", K=2
  * Output: 4
@@ -20,7 +20,6 @@ import java.util.Map;
  * Explanation: The longest substrings with no more than '3' distinct characters are "cbbeb" & "bbebi".
  */
 public class Longest_Substring_With_K_Distinct_Characters {
-    // accepted
     public int longestkSubstr(String s, int k) {
         if (null == s || s.isEmpty()) {
             return -1;

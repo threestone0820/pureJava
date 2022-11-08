@@ -6,18 +6,12 @@ import java.util.Stack;
  * Given the root of a binary tree, determine if it is a valid binary search tree (BST).
  *
  * A valid BST is defined as follows:
- *
- *  5
- * 4 6
- *   3  7
  * The left subtree of a node contains only nodes with keys less than the node's key.
  * The right subtree of a node contains only nodes with keys greater than the node's key.
  * Both the left and right subtrees must also be binary search trees.
  *
  */
 public class _0098_Validate_Binary_Search_Tree {
-    TreeNode preNode = null;
-
     // 迭代的方式解决
     public boolean isValidBST(TreeNode root) {
         if (null == root) {
@@ -42,27 +36,26 @@ public class _0098_Validate_Binary_Search_Tree {
     }
 
     // 递归的方式解决
+    TreeNode preNode = null;
     public boolean isValidBST2(TreeNode root) {
-        if (null == root) {
+        if (root == null) {
             return true;
         }
-
-        return inorder(root);
+        return inOrderBST(root);
     }
 
-    private boolean inorder(TreeNode node) {
-        if (null == node) {
+    private boolean inOrderBST(TreeNode node) {
+        if (node == null) {
             return true;
         }
-
-        if (!inorder(node.left)) {
+        if (!inOrderBST(node.left)) {
             return false;
         }
-        if (preNode != null && node.val <= preNode.val) {
-            return false;
+        if (preNode == null || preNode.val < node.val) {
+            preNode = node;
+            return inOrderBST(node.right);
         }
-        preNode = node;
-        return inorder(node.right);
+        return false;
     }
 
 }

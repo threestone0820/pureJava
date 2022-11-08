@@ -8,7 +8,6 @@ import java.util.List;
  * Given an integer array nums that may contain duplicates, return all possible subsets (the power set).
  *
  * The solution set must not contain duplicate subsets. Return the solution in any order.
- * Example 1:
  *
  * Input: nums = [1,2,2]
  * Output: [[],[1],[1,2],[1,2,2],[2],[2,2]]
@@ -21,20 +20,18 @@ public class _0090_Subsets_II {
     public List<List<Integer>> subsetsWithDup(int[] nums) {
         Arrays.sort(nums);
         List<List<Integer>> result = new ArrayList<>();
-        List<Integer> tempList = new ArrayList<>();
-        backtrace(result, tempList, nums, 0);
+        backtrace(result, new ArrayList<>(), nums, 0);
         return result;
     }
 
-    private void backtrace(List<List<Integer>> list, List<Integer> tempList, int[] nums, int start) {
-        list.add(new ArrayList<>(tempList));
-        for (int i = start; i < nums.length; i++) {
-            if (i != start && nums[i] == nums[i - 1]) {
-                continue;
-            }
+    private void backtrace(List<List<Integer>> result, List<Integer> tempList, int[] nums, int index) {
+        result.add(new ArrayList<>(tempList));
+        for (int i = index; i < nums.length; ) {
             tempList.add(nums[i]);
-            backtrace(list, tempList, nums, i + 1);
+            backtrace(result, tempList, nums, i + 1);
             tempList.remove(tempList.size() - 1);
+            while (++i < nums.length && nums[i] == nums[i - 1]) {
+            }
         }
     }
 }

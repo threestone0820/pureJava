@@ -6,23 +6,9 @@ package three.stone.algorithm.leetcode;
  * There is only one repeated number in nums, return this repeated number.
  *
  * You must solve the problem without modifying the array nums and uses only constant extra space.
- * Example 1:
- *
  *
  * Input: nums = [1,3,4,2,2]
  * Output: 2
- * Example 2:
- *
- * Input: nums = [3,1,3,4,2]
- * Output: 3
- * Example 3:
- *
- * Input: nums = [1,1]
- * Output: 1
- * Example 4:
- *
- * Input: nums = [1,1,2]
- * Output: 1
  */
 public class _0287_Find_The_Duplicate_Number {
     // 注意：n+1个数，且每个整数的范围是[1,n]，所以每个整数都可以作为数组的下标

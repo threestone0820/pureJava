@@ -2,7 +2,6 @@ package three.stone.algorithm.sliding_window;
 
 /**
  * Given two strings s1 and s2, return true if s2 contains a permutation of s1, or false otherwise.
- *
  * In other words, return true if one of s1's permutations is the substring of s2.
  *
  * Example 1:
@@ -14,8 +13,6 @@ package three.stone.algorithm.sliding_window;
  *
  * Input: s1 = "ab", s2 = "eidboaoo"
  * Output: false
- *
- *
  * Constraints:
  *
  * 1 <= s1.length, s2.length <= 104

@@ -39,7 +39,6 @@ public class _0092_Reverse_Linked_List_II {
             prev.next = slow;
             slow = next;
         }
-
         return sentinel.next;
     }
 }

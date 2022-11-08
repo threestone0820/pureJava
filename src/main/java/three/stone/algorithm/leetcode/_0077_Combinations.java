@@ -7,8 +7,6 @@ import java.util.List;
  * Given two integers n and k, return all possible combinations of k numbers out of the range [1, n].
  * You may return the answer in any order.
  *
- * Example 1:
- *
  * Input: n = 4, k = 2
  * Output:
  * [
@@ -19,41 +17,32 @@ import java.util.List;
  *   [1,3],
  *   [1,4],
  * ]
- * Example 2:
  *
  * Input: n = 1, k = 1
  * Output: [[1]]
- *
- *
- * Constraints:
- *
- * 1 <= n <= 20
- * 1 <= k <= n
  */
 public class _0077_Combinations {
     public List<List<Integer>> combine(int n, int k) {
         List<List<Integer>> result = new ArrayList<>();
-        List<Integer> nums = new ArrayList<>();
-        List<Integer> tempList = new ArrayList<>();
-        for (int i = 1; i <= n; i++) {
-            nums.add(i);
-        }
-        backtrace(result, tempList, nums, 0, k);
+        backtrace(result, new ArrayList<>(), n, k, 1);
         return result;
     }
 
-    private void backtrace(List<List<Integer>> result, List<Integer> tempList,
-                           List<Integer> nums, int start, int k) {
-        if (tempList.size() == k) {
-            result.add(new ArrayList<>(tempList));
+    private void backtrace(List<List<Integer>> result, List<Integer> temp, int n, int k, int cur) {
+        int size = temp.size();
+        if (temp.size() == k) {
+            result.add(new ArrayList<>(temp));
             return;
         }
 
-        for (int i = start; i < nums.size(); ++i) {
-            tempList.add(nums.get(i));
-            // 是i + 1, 不是 start + 1
-            backtrace(result, tempList, nums, i + 1, k);
-            tempList.remove(tempList.size() - 1);
+        if (k - size > n - cur + 1) {
+            return;
+        }
+
+        for (int i = cur; i <= n; i++) {
+            temp.add(i);
+            backtrace(result, temp, n, k, i + 1);
+            temp.remove(temp.size() - 1);
         }
     }
 }

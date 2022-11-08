@@ -9,7 +9,6 @@ import java.util.Map;
  * is included in the window. If there is no such substring, return the empty string "".
  *
  * The testcases will be generated such that the answer is unique.
- *
  * A substring is a contiguous sequence of characters within the string.
  *
  *
@@ -40,7 +39,7 @@ import java.util.Map;
  * s and t consist of uppercase and lowercase English letters.
  */
 public class Minimum_Window_Substring {
-    public String minWindow(String s, String t) {
+    public static String minWindow(String s, String t) {
         Map<Character, Integer> map = new HashMap<>();
         for (int i = 0; i < t.length(); i++) {
             char curChar = t.charAt(i);
@@ -60,19 +59,17 @@ public class Minimum_Window_Substring {
                 map.put(curChar, curCount - 1);
             }
 
-
-            while (count == 0) {
+            while (count == 0 && start < end) {
                 if (result == null || end - start < result.length()) {
                     result = s.substring(start, end);
                 }
                 char skippedChar = s.charAt(start++);
-
                 if (map.containsKey(skippedChar)) {
                     Integer skippedCharCount = map.get(skippedChar);
                     if (skippedCharCount == 0) {
                         count++;
                     }
-                    map.put(skippedChar, skippedChar + 1);
+                    map.put(skippedChar, skippedCharCount + 1);
                 }
             }
         }

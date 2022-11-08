@@ -4,12 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * You are given a string s and an integer k. You can choose any character of the string and change it to any other uppercase English character. You can perform this operation at most k times.
+ * You are given a string s and an integer k. You can choose any character of the string
+ * and change it to any other uppercase English character. You can perform this operation at most k times.
  *
- * Return the length of the longest substring containing the same letter you can get after performing the above operations.
- *
- *
- *
+ * Return the length of the longest substring containing the same letter you can get
+ * after performing the above operations.
  * Example 1:
  *
  * Input: s = "ABAB", k = 2
@@ -53,7 +52,6 @@ public class Longest_Repeating_Character_Replacement {
                 // 此时通过遍历map来找到当前最大重复的字符个数，有什么更好的方案吗
                 maxRepeat = findMaxRepeat(map);
             }
-
             result = Math.max(result, end - start);
         }
 
@@ -66,9 +64,5 @@ public class Longest_Repeating_Character_Replacement {
             result = Math.max(result, entry.getValue());
         }
         return result;
-    }
-
-    public static void main(String[] args) {
-        characterReplacement("AABABBA", 1);
     }
 }

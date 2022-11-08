@@ -13,31 +13,24 @@ package three.stone.algorithm.leetcode;
  */
 public class _0086_Partition_List {
     public ListNode partition(ListNode head, int x) {
-        if (null == head || head.next == null) {
+        if (head == null || head.next == null) {
             return head;
         }
-
-        // 创建一个值为x的结点作为枢纽
-        ListNode current = new ListNode(x, null);
-        ListNode sentinel = new ListNode(0, current);
-        ListNode p = sentinel, q = current;
-
+        ListNode dummy1 = new ListNode(0, null);
+        ListNode dummy2 = new ListNode(0, null);
+        ListNode prev1 = dummy1, prev2 = dummy2;
         while (head != null) {
-            ListNode next = head.next;
-            if (head.val < x) {
-                head.next = p.next;
-                p.next = head;
-                p = p.next;
+            ListNode tmp = head.val < x ? prev1 : prev2;
+            tmp.next = head;
+            head = head.next;
+            tmp.next.next = null;
+            if (tmp == prev1) {
+                prev1 = prev1.next;
             } else {
-                head.next = q.next;
-                q.next = head;
-                q = q.next;
+                prev2 = prev2.next;
             }
-            head = next;
         }
-        //删除创建的那个冗余结点
-        p.next = p.next.next;
-
-        return sentinel.next;
+        prev1.next = dummy2.next;
+        return dummy1.next;
     }
 }

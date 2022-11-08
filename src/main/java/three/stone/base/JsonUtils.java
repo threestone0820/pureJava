@@ -231,4 +231,57 @@ public class JsonUtils {
         }
         return res;
     }
+
+    public static void main(String[] args) {
+        System.out.println(imohashMod("bg.mrdh56nbshr9unzj", 128));
+        System.out.println(imohashMod2("bg.mrdh56nbshr9unzj", 128));
+    }
+
+    public static int imohashMod(String s, int b) {
+        return mod(hash(s), b);
+    }
+
+    public static int imohashMod2(String s, int b) {
+        return mod(imohash(s), b);
+    }
+
+    public static int mod(long a, int b) {
+        int res = (int) (a % b);
+        res = res < 0 ? res + b : res;
+        return res;
+    }
+
+    public static long hash(String s) {
+        if (s == null) {
+            return 587058L;
+        }
+        if (s.isEmpty()) {
+            return 0L;
+        }
+
+        long res = s.charAt(0) << 7;
+        for (int i = 0; i < s.length(); ++i) {
+            res = (1000003 * res) ^ s.charAt(i);
+        }
+        res ^= s.length();
+        if (res == -1L) {
+            res = -2L;
+        }
+        return res;
+    }
+
+    public static long imohash(String key) {
+        long h = 0;
+        key = key != null ? key : "";
+
+        for (char x : key.toCharArray()) {
+            h = ((x + h) & 0xFFFFFFFFL);
+            h = ((h << 10) + h) & 0xFFFFFFFFL;
+            h ^= (h >>> 6);
+        }
+        h = ((h << 3) + h) & 0xFFFFFFFFL;
+        h ^= (h >>> 11);
+        h = ((h << 15) + h) & 0xFFFFFFFFL;
+        return h;
+    }
 }
