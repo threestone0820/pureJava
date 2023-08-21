@@ -14,6 +14,7 @@ public class _0303_RangeSumQuery {
         private int[] nums;
         /**
          * 前缀和技巧，避免重复计算
+         * 前缀和主要适用的场景是原始数组不会被修改的情况下，频繁查询某个区间的累加和
          */
         private int[] preSumNums;
 

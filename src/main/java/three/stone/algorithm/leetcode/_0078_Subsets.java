@@ -21,13 +21,12 @@ public class _0078_Subsets {
         return result;
     }
 
-    private void backtrace(List<List<Integer>> result, List<Integer> tempList, int[] nums, int index) {
-        result.add(new ArrayList<>(tempList));
-
+    private void backtrace(List<List<Integer>> result, List<Integer> temp, int[] nums, int index) {
+        result.add(new ArrayList<>(temp));
         for (int i = index; i < nums.length; i++) {
-            tempList.add(nums[i]);
-            backtrace(result, tempList, nums, i + 1);
-            tempList.remove(tempList.size() - 1);
+            temp.add(nums[i]);
+            backtrace(result, temp, nums, i + 1);
+            temp.remove(temp.size() - 1);
         }
     }
 }

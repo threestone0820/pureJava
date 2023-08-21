@@ -31,6 +31,25 @@ package three.stone.algorithm.leetcode;
  */
 public class _0300_Longest_Increasing_Subsequence {
     public int lengthOfLIS(int[] nums) {
-        return 0;
+        int n = nums.length;
+        int[] dp = new int[n];
+        for (int i = 0; i < n; i++) {
+            dp[i] = 1;
+        }
+        // O(n2) 的动态规划遍历方式
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (nums[i] > nums[j] && dp[i] < dp[j] + 1) {
+                    dp[i] = dp[j] + 1;
+                }
+            }
+        }
+        int result = dp[0];
+        for (int i = 0; i < n; i++) {
+            if (dp[i] > result) {
+                result = dp[i];
+            }
+        }
+        return result;
     }
 }

@@ -14,11 +14,12 @@ package three.stone.algorithm.leetcode;
  */
 public class _0053_Maximum_Subarray {
     public int maxSubArray(int[] nums) {
-        int result = Integer.MIN_VALUE, curMax = 0;
-        for (int i = 0; i < nums.length; i++) {
-            curMax = Math.max(curMax + nums[i], nums[i]);
-            result = Math.max(result, curMax);
+        int max = nums[0], preMax = max;
+        for (int i = 1; i < nums.length; i++) {
+            int curMax = preMax > 0 ? preMax + nums[i] : nums[i];
+            max = Math.max(max, curMax);
+            preMax = curMax;
         }
-        return result;
+        return max;
     }
 }

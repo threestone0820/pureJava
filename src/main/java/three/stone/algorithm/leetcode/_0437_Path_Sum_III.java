@@ -10,7 +10,22 @@ package three.stone.algorithm.leetcode;
  * but it must go downwards (i.e., traveling only from parent nodes to child nodes).
  */
 public class _0437_Path_Sum_III {
+    int result = 0;
     public int pathSum(TreeNode root, int targetSum) {
-        return 0;
+        dfs(root, targetSum);
+        dfs(root.left, targetSum);
+        dfs(root.right, targetSum);
+        return result;
+    }
+
+    private void dfs(TreeNode node, int targetSum) {
+        if (node == null) {
+            return;
+        }
+        if (node.val == targetSum) {
+            result++;
+        }
+        dfs(node.left, targetSum - node.val);
+        dfs(node.right, targetSum - node.val);
     }
 }

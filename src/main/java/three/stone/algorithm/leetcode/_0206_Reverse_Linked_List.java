@@ -8,18 +8,17 @@ package three.stone.algorithm.leetcode;
  */
 public class _0206_Reverse_Linked_List {
     public ListNode reverseList(ListNode head) {
-        if (null == head || null == head.next) {
+        if (head == null || head.next == null) {
             return head;
         }
-
-        ListNode sentinel = new ListNode(0, null);
-        while (head != null) {
-            ListNode next = head.next;
-            head.next = sentinel.next;
-            sentinel.next = head;
-            head = next;
+        ListNode dummy = new ListNode(0), p = head;
+        while (p != null) {
+            ListNode next = p.next;
+            p.next = dummy.next;
+            dummy.next = p;
+            p = next;
         }
-        return sentinel.next;
+        return dummy.next;
     }
 
     public ListNode reverseListII(ListNode head) {

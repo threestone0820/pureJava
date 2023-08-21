@@ -1,5 +1,7 @@
 package three.stone.algorithm.leetcode;
 
+import org.apache.logging.log4j.util.PropertySource;
+
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
@@ -19,30 +21,23 @@ import java.util.PriorityQueue;
  * Explanation: The elements in the matrix are [1,5,9,10,11,12,13,13,15], and the 8th smallest number is 13
  */
 public class _0378_KthSmallestElementInSortedMatrix {
-    private static class Tuple{
-        int row;
-        int column;
-        int value;
-
-        public Tuple(int row, int column, int value) {
-            this.row = row;
-            this.column = column;
-            this.value = value;
-        }
-    }
     public int kthSmallest(int[][] matrix, int k) {
-        int n = matrix.length;
-        PriorityQueue<Tuple> heap = new PriorityQueue<>(Comparator.comparingInt(t -> t.value));
-        for (int i = 0; i < n; i++) {
-            heap.offer(new Tuple(0, i, matrix[0][i]));
-        }
-        for (int i = 0; i < k - 1; i++) {
-            Tuple tuple = heap.poll();
-            if (tuple.row == n - 1) {
-                continue;
+        PriorityQueue<Integer> heap = new PriorityQueue<>(Comparator.reverseOrder());
+        int row = matrix.length;
+        int column = matrix[0].length;
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
+                int value = matrix[i][j];
+                if (heap.size() < k) {
+                    heap.offer(value);
+                } else {
+                    if (value < heap.peek()) {
+                        heap.poll();
+                        heap.offer(value);
+                    }
+                }
             }
-            heap.offer(new Tuple(tuple.row + 1, tuple.column, matrix[tuple.row + 1][tuple.column]));
         }
-        return heap.poll().value;
+        return heap.poll();
     }
 }

@@ -16,15 +16,13 @@ package three.stone.algorithm.leetcode;
 public class _0424_LongestRepeatingCharacterReplacement {
     public int characterReplacement(String s, int k) {
         int[] arr = new int[26];
-        char[] chars = s.toCharArray();
-        int len = chars.length;
-        int low = 0, high = 0, result = Integer.MIN_VALUE;
-        while (high < len) {
-            arr[chars[high++] - 'A']++;
+        int start = 0, stop = 0, result = 0;
+        while (stop < s.length()) {
+            arr[s.charAt(stop++) - 'A']++;
             while (counter(arr) > k) {
-                arr[chars[low++] - 'A']--;
+                arr[s.charAt(start++) - 'A']--;
             }
-            result = Math.max(result, high - low);
+            result = Math.max(stop - start, result);
         }
         return result;
     }

@@ -26,32 +26,25 @@ public class _0142_Linked_List_CycleII {
      * Thus x1 = x3
      */
     public ListNode detectCycle(ListNode head) {
-        if (null == head || head.next == null) {
+        if (head == null || head.next == null) {
             return null;
         }
-
         ListNode slow = head, quick = head;
-        boolean flag = false;
-        while (quick != null) {
+        while (quick.next != null) {
             slow = slow.next;
-            if (quick.next == null) {
-                return null;
-            }
             quick = quick.next.next;
             if (slow == quick) {
-                flag = true;
                 break;
             }
-        }
-
-        if (!flag) {
-            return null;
+            if (quick == null || quick.next == null) {
+                return null;
+            }
         }
 
         slow = head;
-        while (quick != slow) {
-            quick = quick.next;
+        while (slow != quick) {
             slow = slow.next;
+            quick = quick.next;
         }
         return slow;
     }

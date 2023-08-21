@@ -28,4 +28,28 @@ public class _0287_Find_The_Duplicate_Number {
         } while (i != j);
         return i;
     }
+
+    public int findDuplicateII(int[] nums) {
+        cyclicSort(nums);
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != i + 1) {
+                return nums[i];
+            }
+        }
+        return 0;
+    }
+
+    private void cyclicSort(int[] nums) {
+        int i = 0, len = nums.length;
+        while (i < len) {
+            int j = nums[i] - 1;
+            if (nums[j] != nums[i]) {
+                int temp = nums[j];
+                nums[j] = nums[i];
+                nums[i] = temp;
+            } else {
+                i++;
+            }
+        }
+    }
 }

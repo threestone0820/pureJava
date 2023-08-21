@@ -1,7 +1,9 @@
 package three.stone.algorithm.leetcode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Given two strings s and p, return an array of all the start indices of p's anagrams in s.
@@ -23,38 +25,40 @@ import java.util.List;
  */
 public class _0438_FindAllAnagrams {
     public List<Integer> findAnagrams(String s, String p) {
-        int[] counter = new int[26];
-        for (char c : p.toCharArray()) {
-            counter[c - 'a']++;
-        }
-
-        int plen = p.length();
-        int slen = s.length();
         List<Integer> result = new ArrayList<>();
-        if (s.length() < p.length()) {
-            return result;
+        Map<Character, Integer> needMap = new HashMap<>();
+        Map<Character, Integer> windowMap = new HashMap<>();
+        for (char c : p.toCharArray()) {
+            needMap.merge(c, 1, (oldValue, unused) -> oldValue + 1);
         }
-        for (int i = 0; i < plen; i++) {
-            counter[s.charAt(i) - 'a']--;
-        }
-        for (int i = 0; i <= slen - plen; i++) {
-            if (allZero(counter)) {
-                result.add(i);
+        int counter = needMap.size();
+        int start = 0, end = 0;
+        char[] chars = s.toCharArray();
+        while (end < chars.length) {
+            char ch = chars[end++];
+            Integer needCount = needMap.get(ch);
+            if (needCount != null) {
+                Integer curCount = windowMap.getOrDefault(ch, 0);
+                windowMap.put(ch, curCount + 1);
+                if (curCount + 1 == needCount) {
+                    counter--;
+                }
             }
-            counter[s.charAt(i) - 'a'] ++;
-            if (i != slen - plen) {
-                counter[s.charAt(i + plen) - 'a']--;
+
+            while (end - start == p.length()) {
+                if (counter == 0) {
+                    result.add(start);
+                }
+                char ch2 = chars[start++];
+                Integer curCount2 = windowMap.get(ch2);
+                if (curCount2 != null) {
+                    windowMap.put(ch2, curCount2 - 1);
+                    if (curCount2.equals(needMap.get(ch2))) {
+                        counter++;
+                    }
+                }
             }
         }
         return result;
-    }
-
-    private boolean allZero(int[] arr) {
-        for (int num : arr) {
-            if (num != 0) {
-                return false;
-            }
-        }
-        return true;
     }
 }

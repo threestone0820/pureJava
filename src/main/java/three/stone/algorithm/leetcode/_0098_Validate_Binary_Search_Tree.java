@@ -26,7 +26,7 @@ public class _0098_Validate_Binary_Search_Tree {
                 root = root.left;
             }
             root = stack.pop();
-            if (pre != null && pre.val > root.val) {
+            if (pre != null && pre.val >= root.val) {
                 return false;
             }
             pre = root;
@@ -38,9 +38,6 @@ public class _0098_Validate_Binary_Search_Tree {
     // 递归的方式解决
     TreeNode preNode = null;
     public boolean isValidBST2(TreeNode root) {
-        if (root == null) {
-            return true;
-        }
         return inOrderBST(root);
     }
 
@@ -51,11 +48,11 @@ public class _0098_Validate_Binary_Search_Tree {
         if (!inOrderBST(node.left)) {
             return false;
         }
-        if (preNode == null || preNode.val < node.val) {
-            preNode = node;
-            return inOrderBST(node.right);
+        if (preNode != null && preNode.val >= node.val) {
+            return false;
         }
-        return false;
+        preNode = node;
+        return inOrderBST(node.right);
     }
 
 }

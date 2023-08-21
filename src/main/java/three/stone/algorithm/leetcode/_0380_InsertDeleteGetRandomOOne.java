@@ -54,7 +54,7 @@ public class _0380_InsertDeleteGetRandomOOne {
         /** Initialize your data structure here. */
         public RandomizedSet() {
             nums = new ArrayList<>();
-            locs = new HashMap();
+            locs = new HashMap<>();
         }
 
         /** Inserts a value to the set. Returns true if the set did not already contain the specified element. */

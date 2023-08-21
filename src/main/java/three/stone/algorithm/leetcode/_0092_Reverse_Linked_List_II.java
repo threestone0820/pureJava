@@ -17,28 +17,22 @@ public class _0092_Reverse_Linked_List_II {
         if (null == head || null == head.next || left == right) {
             return head;
         }
-
-        int gape = right - left;
-        ListNode sentinel = new ListNode(0, head);
-        ListNode prev = sentinel, slow = head,  quick = head;
-        while (gape-- > 0) {
-            quick = quick.next;
-        }
-
-        while (left-- > 1) {
+        ListNode dummy = new ListNode(0, head), prev = dummy, p = head, q = head;
+        while (--left > 0) {
             prev = prev.next;
-            slow = slow.next;
-            quick = quick.next;
+            p = p.next;
         }
-
-        prev.next = quick.next;
-        quick.next = null;
-        while (slow != null) {
-            ListNode next = slow.next;
-            slow.next = prev.next;
-            prev.next = slow;
-            slow = next;
+        while (--right > 0) {
+            q = q.next;
         }
-        return sentinel.next;
+        prev.next = q.next;
+        q.next = null;
+        while (p != null) {
+            ListNode next = p.next;
+            p.next = prev.next;
+            prev.next = p;
+            p = next;
+        }
+        return dummy.next;
     }
 }

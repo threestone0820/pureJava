@@ -24,73 +24,37 @@ import java.util.Map;
  */
 public class _0076_Minimum_Window_Substring {
     public String minWindowII(String s, String t) {
-        Map<Character, Integer> map = new HashMap<>();
-        int counter = t.length();
+        Map<Character, Integer> numMap = new HashMap<>();
         for (char c : t.toCharArray()) {
-            map.merge(c, 1, (old, unused) -> old + 1);
+            numMap.merge(c, 1, (oldVal, unused) -> oldVal + 1);
         }
-
-        int left = 0, right = 0, min = Integer.MAX_VALUE;
-        String result = "";
+        int finalStart = 0, finalEnd = Integer.MAX_VALUE, start = 0, end = 0, count = t.length();
         char[] chars = s.toCharArray();
-        while (right < chars.length) {
-            char ch = chars[right++];
-            Integer curCount = map.get(ch);
-            if (null != curCount) {
-                map.put(ch, curCount - 1);
-                if (curCount.equals(1)) {
-                    counter--;
+        while (end < s.length()) {
+            char ch = chars[end++];
+            Integer num = numMap.get(ch);
+            if (num != null) {
+                numMap.put(ch, num - 1);
+                if (num > 0) {
+                    count--;
                 }
             }
 
-            while (counter == 0) {
-                if (right - left < min) {
-                    min = right - left;
-                    result = s.substring(left, right);
+            while (count == 0) {
+                if (end - start < finalEnd - finalStart) {
+                    finalEnd = end;
+                    finalStart = start;
                 }
-                char ch2 = chars[left++];
-                Integer curCount2 = map.get(ch2);
-                if (curCount2 != null) {
-                    map.put(ch2, curCount2 + 1);
-                    if (curCount2 == 0) {
-                        counter++;
+                char ch2 = chars[start++];
+                Integer num2 = numMap.get(ch2);
+                if (num2 != null) {
+                    numMap.put(ch2, num2 + 1);
+                    if (num2 == 0) {
+                        count++;
                     }
                 }
             }
         }
-
-        return result;
-    }
-
-    public String minWindow(String s, String t) {
-        int[] map = new int[128];
-        for (char c : t.toCharArray()) {
-            map[c]++;
-        }
-
-        int start = 0, end = 0, startResult = 0, endResult = 0, counter = t.length(), length = Integer.MAX_VALUE;
-        while (end < s.length()) {
-            char ch = s.charAt(end);
-            if (map[ch] > 0) {
-                counter--;
-            }
-            map[ch]--;
-            end++;
-            // 求最小子串时，while循环中的条件是满足要求的判断
-            while (counter == 0) {
-                if (end - start < length) {
-                    length = end - start;
-                    startResult = start;
-                    endResult = end;
-                }
-
-                if (map[s.charAt(start)] == 0) {
-                    counter++;
-                }
-                map[s.charAt(start++)]++;
-            }
-        }
-
-        return length == Integer.MAX_VALUE ? "" : s.substring(startResult, endResult);
+        return finalEnd == Integer.MAX_VALUE ? "" : s.substring(finalStart, finalEnd);
     }
 }

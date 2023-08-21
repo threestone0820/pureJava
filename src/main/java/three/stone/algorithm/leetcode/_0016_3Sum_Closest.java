@@ -36,8 +36,4 @@ public class _0016_3Sum_Closest {
         return currentSum;
     }
 
-    public static void main(String[] args) {
-        int[] nums = new int[]{0, 2, 1, -3};
-        System.out.println(threeSumClosest(nums, 1));
-    }
 }

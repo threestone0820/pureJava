@@ -1,5 +1,7 @@
 package three.stone.algorithm.leetcode;
 
+import java.util.PriorityQueue;
+
 /**
  * Given an integer array nums and an integer k, return the kth largest element in the array.
  * Note that it is the kth largest element in the sorted order, not the kth distinct element.
@@ -9,6 +11,23 @@ package three.stone.algorithm.leetcode;
  * Output: 5
  */
 public class _0215_KthLargestElementInArray {
+
+    public int findKthLargestII(int[] nums, int k) {
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        for (int num : nums) {
+            if (minHeap.size() < k) {
+                minHeap.offer(num);
+            } else {
+                if (num > minHeap.peek()) {
+                    minHeap.poll();
+                    minHeap.offer(num);
+                }
+            }
+        }
+        return minHeap.poll();
+    }
+
+
     public int findKthLargest(int[] nums, int k) {
         int low = 0, high = nums.length - 1;
         int target = nums.length - k;

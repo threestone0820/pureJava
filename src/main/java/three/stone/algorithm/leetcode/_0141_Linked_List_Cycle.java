@@ -11,20 +11,20 @@ package three.stone.algorithm.leetcode;
  */
 public class _0141_Linked_List_Cycle {
     public boolean hasCycle(ListNode head) {
-        if (null == head || head.next == null) {
+        if (head == null || head.next == null) {
             return false;
         }
 
-        ListNode slow = head, quick = head.next;
+        ListNode slow = head, quick = slow.next;
         while (quick != null) {
             if (slow == quick) {
                 return true;
             }
             slow = slow.next;
-            if (quick.next != null) {
-                quick = quick.next.next;
-            } else {
+            if (quick.next == null) {
                 return false;
+            } else {
+                quick = quick.next.next;
             }
         }
         return false;

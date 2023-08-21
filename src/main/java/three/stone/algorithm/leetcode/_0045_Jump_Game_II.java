@@ -27,6 +27,19 @@ package three.stone.algorithm.leetcode;
  */
 public class _0045_Jump_Game_II {
     public int jump(int[] nums) {
-        return 0;
+        return helper(nums, nums.length - 1);
+    }
+
+    private int helper(int[] nums, int n) {
+        if (n == 0) {
+            return 0;
+        }
+        int minIndex = n;
+        for (int i = n - 1; i >= 0; i--) {
+            if (nums[i] >= n - i) {
+                minIndex = Math.min(minIndex, i);
+            }
+        }
+        return 1 + helper(nums, minIndex);
     }
 }

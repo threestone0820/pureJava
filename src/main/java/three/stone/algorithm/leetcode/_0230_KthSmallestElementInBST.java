@@ -12,6 +12,18 @@ import java.util.Stack;
  * Follow up: If the BST is modified often (i.e., we can do insert and delete operations)
  * and you need to find the kth smallest frequently, how would you optimize?
  */
+
+/**
+ * 怎样让这个算法的复杂度达到O(log(N))呢：
+ * 在二叉树节点中维护额外信息：每个节点需要记录当前结点所处的排序的位置
+ * 比如说你让我查找排名为 k 的元素，当前节点知道自己排名第 m，那么我可以比较 m 和 k 的大小：
+ *
+ * 1、如果 m == k，显然就是找到了第 k 个元素，返回当前节点就行了。
+ *
+ * 2、如果 k < m，那说明排名第 k 的元素在左子树，所以可以去左子树搜索第 k 个元素。
+ *
+ * 3、如果 k > m，那说明排名第 k 的元素在右子树，所以可以去右子树搜索第 k - m个元素
+ */
 public class _0230_KthSmallestElementInBST {
 
     private int count = 0, result = 0;

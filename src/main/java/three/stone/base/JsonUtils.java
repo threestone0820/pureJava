@@ -10,12 +10,19 @@ import three.stone.exception.Exceptions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class JsonUtils {
     private static final Logger logger = LogManager.getLogger();
@@ -232,9 +239,14 @@ public class JsonUtils {
         return res;
     }
 
-    public static void main(String[] args) {
-        System.out.println(imohashMod("bg.mrdh56nbshr9unzj", 128));
-        System.out.println(imohashMod2("bg.mrdh56nbshr9unzj", 128));
+    private static final Pattern NICKNAME_PLACEHOLDER_PATTERN = Pattern.compile("\\{(\\w+):(\\w+)}");
+
+    public static void main(String[] args) throws UnsupportedEncodingException {
+
+        System.out.println(imohashMod("bg.vtkeffoxcgu8ucxw", 32));
+        System.out.println(imohashMod2("bg.vtkeffoxcgu8ucxw", 32));
+
+
     }
 
     public static int imohashMod(String s, int b) {

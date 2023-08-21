@@ -19,19 +19,20 @@ public class _0056_Merge_Intervals {
     public int[][] merge(int[][] intervals) {
         Arrays.sort(intervals, Comparator.comparingInt(arr -> arr[0]));
         List<int[]> result = new ArrayList<>();
-        for (int i = 0; i < intervals.length; ) {
+        for (int i = 0; i < intervals.length; i++) {
             int left = intervals[i][0];
             int right = intervals[i][1];
             int j = i + 1;
-            while (j < intervals.length && intervals[j][0] <= right) {
-                right = Math.max(right, intervals[j][1]);
-                j++;
-
+            for (; j < intervals.length; j++) {
+                if (intervals[j][0] > right) {
+                    break;
+                } else {
+                    right = Math.max(right, intervals[j][1]);
+                }
             }
-
-            result.add(new int[]{left, right});
             i = j;
+            result.add(new int[]{left, right});
         }
-        return result.toArray(new int[1][]);
+        return result.toArray(new int[0][]);
     }
 }

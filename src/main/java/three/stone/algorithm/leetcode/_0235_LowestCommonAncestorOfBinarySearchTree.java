@@ -33,4 +33,15 @@ public class _0235_LowestCommonAncestorOfBinarySearchTree {
         }
         return null;
     }
+
+    public TreeNode lowestCommonAncestorII(TreeNode root, TreeNode p, TreeNode q) {
+        if (p == root || q == root || (p.val > root.val && q.val < root.val) || (p.val < root.val && q.val > root.val)) {
+            return root;
+        }
+        if (p.val > root.val) {
+            return lowestCommonAncestorII(root.right, p, q);
+        } else {
+            return lowestCommonAncestorII(root.left, p, q);
+        }
+    }
 }

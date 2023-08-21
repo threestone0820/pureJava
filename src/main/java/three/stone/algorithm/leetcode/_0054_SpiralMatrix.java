@@ -20,29 +20,31 @@ public class _0054_SpiralMatrix {
             return;
         }
 
-        for (int i = sc; i <= ec; i++) {
-            result.add(matrix[sr][i]);
-        }
-
-        for (int i = sr + 1; i <= er; i++) {
-            result.add(matrix[i][ec]);
-        }
-
-
-        if (er > sr) {
-            for (int i = ec - 1; i >= sc; i--) {
-                result.add(matrix[er][i]);
+        // 把只有一行或一列的情况单独考虑
+        if (sr == er) {
+            for (int i = sc; i <= ec; i++) {
+                result.add(matrix[sr][i]);
             }
-        }
-
-
-        if (ec > sc) {
-            for (int i = er - 1; i > sr; i--) {
+        } else if (sc == ec) {
+            for (int i = sr; i <= er; i++) {
                 result.add(matrix[i][sc]);
             }
-        }
+        }  else {
+            for (int i = sc; i < ec; i++) {
+                result.add(matrix[sr][i]);
+            }
+            for (int i = sr; i < er; i++) {
+                result.add(matrix[i][ec]);
+            }
+            for (int i = ec; i > sc; i--) {
+                result.add(matrix[er][i]);
+            }
+            for (int i = er; i > sr ; i--) {
+                result.add(matrix[i][sc]);
+            }
 
-        visitHelper(matrix, result, sr + 1, sc + 1, er - 1, ec - 1);
+            visitHelper(matrix, result, sr + 1, sc + 1, er - 1, ec - 1);
+        }
     }
 
 }

@@ -6,6 +6,7 @@ package three.stone.algorithm.leetcode;
  * Output: [4,7,2,9,6,3,1]
  */
 public class _0226_InvertBinaryTree {
+    // 遍历的方式
     public TreeNode invertTree(TreeNode root) {
         if (root == null) {
             return null;
@@ -16,6 +17,19 @@ public class _0226_InvertBinaryTree {
         root.right = temp;
         invertTree(root.left);
         invertTree(root.right);
+        return root;
+    }
+
+    // 分解问题（子树）的方式
+    public TreeNode invertTreeII(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+
+        TreeNode left = invertTreeII(root.left);
+        TreeNode right = invertTreeII(root.right);
+        root.left = right;
+        root.right = left;
         return root;
     }
 }

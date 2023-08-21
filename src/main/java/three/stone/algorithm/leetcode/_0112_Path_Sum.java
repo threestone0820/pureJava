@@ -8,28 +8,17 @@ package three.stone.algorithm.leetcode;
  */
 public class _0112_Path_Sum {
     public boolean hasPathSum(TreeNode root, int targetSum) {
-        if (null == root) {
+        if (root == null) {
             return false;
         }
-
-        return preOrder(root, targetSum);
-    }
-
-    private boolean preOrder(TreeNode node, int target) {
-        if (node.left == null && node.right == null) {
-            if (node.val == target) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        boolean left = node.left != null && preOrder(node.left, target - node.val);
-        // 左边为true就返回，右边就不用再递归了
-        if (left) {
+        if (root.left == null && root.right == null && root.val == targetSum) {
             return true;
-        } else {
-            return node.right != null && preOrder(node.right, target - node.val);
         }
+        if (hasPathSum(root.left, targetSum - root.val)) {
+            return true;
+        }
+        return hasPathSum(root.right, targetSum - root.val);
     }
+
+
 }

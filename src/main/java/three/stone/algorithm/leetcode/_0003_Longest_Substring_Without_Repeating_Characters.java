@@ -1,5 +1,8 @@
 package three.stone.algorithm.leetcode;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Given a string s, find the length of the longest substring without repeating characters.
  * Example 1:
@@ -13,25 +16,19 @@ package three.stone.algorithm.leetcode;
  */
 public class _0003_Longest_Substring_Without_Repeating_Characters {
     public int lengthOfLongestSubstring(String s) {
-        int[] map = new int[128];
-
-        int start = 0, end = 0, maxLen = Integer.MIN_VALUE;
-        while (end < s.length()) {
-            char c = s.charAt(end);
-            map[c]++;
-            // end++，一是实现自增遍历，二也是为了下面正确的求长度
-            end++;
-            // 求最大子串时，while循环中的条件是不满足要求的判断
-            // 求最小子串时，while循环中的条件是满足要求的判断
-            while (map[c] > 1) {
-                map[s.charAt(start++)]--;
+        Map<Character, Integer> map = new HashMap<>();
+        int start = 0, stop = 0, result = 0;
+        while (stop < s.length()) {
+            char ch = s.charAt(stop++);
+            int count = map.compute(ch, (key, oldValue) -> oldValue == null ? 1 : oldValue + 1);
+            if (count == 1) {
+                result = Math.max(stop - start, result);
             }
-
-            if (end - start > maxLen) {
-                maxLen = end - start;
+            while (count == 2) {
+                map.compute(s.charAt(start++), (key, oldValue) -> oldValue == 1 ? null : oldValue - 1);
+                count = map.get(ch);
             }
         }
-
-        return maxLen == Integer.MIN_VALUE ? 0 : maxLen;
+        return result;
     }
 }

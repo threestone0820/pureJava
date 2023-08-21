@@ -21,18 +21,20 @@ public class _0435_NonOverlapping_Intervals {
     public int eraseOverlapIntervals(int[][] intervals) {
         int count = 0;
         Arrays.sort(intervals, Comparator.comparingInt(arr -> arr[0]));
-        for (int i = 0; i < intervals.length; ) {
-            int right = intervals[i][1];
+        int i = 0;
+        while (i < intervals.length) {
             int j = i + 1;
-            while (j < intervals.length && intervals[j][0] < right) {
-                // 关键代码，移除右边界更大的那个，保留更小的
-                right = Math.min(right, intervals[j][1]);
+            int right = intervals[i][1];
+            while (j < intervals.length) {
+                if (intervals[j][0] >= right) {
+                    break;
+                }
                 count++;
+                right = Math.min(right, intervals[j][1]);
                 j++;
             }
             i = j;
         }
-
         return count;
     }
 }

@@ -16,25 +16,25 @@ public class _0124_BinaryTreeMaximumPathSum {
         return max;
     }
 
-    private int helper(TreeNode root) {
-        if (root == null) {
+    // 注意node的val可能小于0
+    private int helper(TreeNode node) {
+        if (node == null) {
             return 0;
         }
-        int curMax = root.val;
-        int left = helper(root.left);
-        int right = helper(root.right);
+        int left = helper(node.left);
+        int right = helper(node.right);
+        int curMax = node.val;
         if (left > 0) {
             curMax += left;
         }
         if (right > 0) {
             curMax += right;
         }
-        max = Math.max(curMax, max);
-
+        max = Math.max(max, curMax);
         if (left < 0 && right < 0) {
-            return root.val;
+            return node.val;
         } else {
-            return root.val + Math.max(left, right);
+            return node.val + Math.max(left, right);
         }
     }
 }

@@ -15,26 +15,24 @@ public class _0102_Binary_Tree_Level_Order_Traversal {
     public List<List<Integer>> levelOrderII(TreeNode root) {
         List<List<Integer>> result = new ArrayList<>();
         Queue<TreeNode> queue = new LinkedList<>();
-        if (null != root) {
-            queue.add(root);
+        if (root != null) {
+            queue.offer(root);
         }
-
         while (!queue.isEmpty()) {
-            int levelSize = queue.size();
-            List<Integer> levelResult = new ArrayList<>();
-            for (int i = 0; i < levelSize; i++) {
-                TreeNode node = queue.poll();
-                levelResult.add(node.val);
-                if (node.left != null) {
-                    queue.offer(node.left);
+            int size = queue.size();
+            List<Integer> list = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                TreeNode removed = queue.poll();
+                list.add(removed.val);
+                if (removed.left != null) {
+                    queue.offer(removed.left);
                 }
-                if (node.right != null) {
-                    queue.offer(node.right);
+                if (removed.right != null) {
+                    queue.offer(removed.right);
                 }
             }
-            result.add(levelResult);
+            result.add(list);
         }
-
         return result;
     }
 }

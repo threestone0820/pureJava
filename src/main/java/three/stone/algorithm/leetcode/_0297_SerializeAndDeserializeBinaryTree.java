@@ -19,7 +19,7 @@ import java.util.Queue;
  * You do not necessarily need to follow this format, so please be creative and come up with different approaches yourself.
  */
 public class _0297_SerializeAndDeserializeBinaryTree {
-    private String SEPERATOR = ",";
+    private String SEPARATOR = ",";
     private String NULL = "X";
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
@@ -30,33 +30,32 @@ public class _0297_SerializeAndDeserializeBinaryTree {
     }
 
     private void preOrderSerialize(TreeNode node, StringBuilder builder) {
+        builder.append(SEPARATOR);
         if (node == null) {
-            builder.append(SEPERATOR);
             builder.append(NULL);
-        } else {
-            builder.append(SEPERATOR);
-            builder.append(node.val);
-            preOrderSerialize(node.left, builder);
-            preOrderSerialize(node.right, builder);
+            return;
         }
+        builder.append(node.val);
+        preOrderSerialize(node.left, builder);
+        preOrderSerialize(node.right, builder);
     }
 
-
+    int index;
     // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
-        Queue<String> values = new LinkedList<>(Arrays.asList(data.split(SEPERATOR)));
-        return preOrderDeserialize(values);
+        String[] chars = data.split(SEPARATOR);
+        index = 0;
+        return preOrderDeserialize(chars);
     }
 
-    private TreeNode preOrderDeserialize(Queue<String> queue) {
-        String value = queue.poll();
-        if (value.equals(NULL)) {
+    private TreeNode preOrderDeserialize(String[] chars) {
+        String ch = chars[index++];
+        if (ch.equals(NULL)) {
             return null;
-        } else {
-            TreeNode node = new TreeNode(Integer.parseInt(value));
-            node.left = preOrderDeserialize(queue);
-            node.right = preOrderDeserialize(queue);
-            return node;
         }
+        TreeNode node = new TreeNode(Integer.parseInt(ch));
+        node.left = preOrderDeserialize(chars);
+        node.right = preOrderDeserialize(chars);
+        return node;
     }
 }

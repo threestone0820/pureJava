@@ -27,18 +27,17 @@ public class _0046_Permutations {
         return result;
     }
 
-    private void backtrace(List<List<Integer>> result, List<Integer> tempList, int[] nums) {
-        if (tempList.size() == nums.length) {
-            result.add(new ArrayList<>(tempList));
-            return;
-        }
-        for (int num : nums) {
-            if (tempList.contains(num)) {
-                continue;
+    private void backtrace(List<List<Integer>> result, List<Integer> temp, int[] nums) {
+        if (temp.size() == nums.length) {
+            result.add(new ArrayList<>(temp));
+        } else {
+            for (int num : nums) {
+                if (!temp.contains(num)) {
+                    temp.add(num);
+                }
+                backtrace(result, temp, nums);
+                temp.remove(temp.size() - 1);
             }
-            tempList.add(num);
-            backtrace(result, tempList, nums);
-            tempList.remove(tempList.size() - 1);
         }
     }
 }

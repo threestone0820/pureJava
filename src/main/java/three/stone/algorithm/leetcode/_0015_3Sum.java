@@ -15,7 +15,6 @@ import java.util.List;
  *
  * Input: nums = []
  * Output: []
- * Example 3:
  *
  * Input: nums = [0]
  * Output: []
@@ -23,79 +22,49 @@ import java.util.List;
 public class _0015_3Sum {
     public static List<List<Integer>> threeSum2(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
-        if (nums.length < 3) {
-            return result;
-        }
         Arrays.sort(nums);
-
-        for (int i = 0; i <= nums.length - 3; i++) {
-            int cur = nums[i], target = -nums[i];
-            // 一个数只处理一次
-            if (i != 0 && nums[i] == nums[i - 1]) {
-                continue;
-            }
-            int low = i + 1, high = nums.length - 1;
-            while (low < high) {
-                if (nums[low] + nums[high] == target) {
-                    int second = nums[low];
-                    int third = nums[high];
-                    result.add(Arrays.asList(cur, second, third));
-                    while (low < high && nums[low] == second) {
-                        low++;
-                    }
-                    while (low < high && nums[high] == third) {
-                        high--;
-                    }
-                } else if (nums[low] + nums[high] > target) {
-                    high--;
-                } else {
-                    low++;
+        int i = 0;
+        while (i <= nums.length - 3) {
+            int first = nums[i];
+            List<List<Integer>> list = twoSum(nums, -first, i + 1, nums.length - 1);
+            if (!list.isEmpty()) {
+                for (List<Integer> l : list) {
+                    List<Integer> temp = new ArrayList<>(l);
+                    temp.add(first);
+                    result.add(temp);
                 }
+            }
+
+            while (i <= nums.length - 3 && nums[i] == first) {
+                i++;
             }
         }
         return result;
     }
 
-
-
-
-
-
-
-    public static List<List<Integer>> threeSum(int[] nums) {
+    private static List<List<Integer>> twoSum(int[] nums, int target, int i, int j) {
         List<List<Integer>> result = new ArrayList<>();
-        Arrays.sort(nums);
+        while (i < j) {
+            if (nums[i] + nums[j] == target) {
+                int second = nums[i];
+                int third = nums[j];
+                result.add(Arrays.asList(second, third));
 
-        for (int i = 0; i < nums.length - 2; i++) {
-            // 先排序，然后通过这种方式来跳过重复的数字，可以保证某个数字只处理过一次
-            if (i == 0 || nums[i] != nums[i - 1]) {
-                int target = -nums[i];
-
-                int low = i + 1, high = nums.length - 1;
-                while (low < high) {
-                    if (nums[low] + nums[high] == target) {
-                        int second = nums[low];
-                        int third = nums[high];
-                        result.add(Arrays.asList(nums[i], second, third));
-
-                        // 去重
-                        while (low < high && second == nums[low]) {
-                            low++;
-                        }
-
-                        // 去重
-                        while (low < high && third == nums[high]) {
-                            high--;
-                        }
-                    } else if (nums[low] + nums[high] < target) {
-                        low++;
-                    } else {
-                        high--;
-                    }
+                // 去重
+                while (i < j && second == nums[i]) {
+                    i++;
                 }
+
+                // 去重
+                while (i < j && third == nums[j]) {
+                    j--;
+                }
+            } else if (nums[i] + nums[j] > target) {
+                j--;
+            } else {
+                i++;
             }
         }
-
         return result;
     }
 }

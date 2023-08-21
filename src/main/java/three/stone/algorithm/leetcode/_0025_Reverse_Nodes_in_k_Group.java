@@ -27,32 +27,28 @@ public class _0025_Reverse_Nodes_in_k_Group {
         }
 
         ListNode sentinel = new ListNode(0, head);
-        ListNode prev = sentinel, end = head;
-        while (end != null) {
-            for (int i = 1; i < k; i++) {
-                if (end.next != null) {
-                    end = end.next;
-                } else {
-                    return sentinel.next;
-                }
+        ListNode prev = sentinel, q = kthNode(prev, k);
+        while (q != null) {
+            ListNode nextPrev = prev.next;
+            ListNode p = prev.next;
+            prev.next = q.next;
+            q.next = null;
+            while (p != null) {
+                ListNode next = p.next;
+                p.next = prev.next;
+                prev.next = p;
+                p = next;
             }
-
-            ListNode start = prev.next;
-            prev.next = end.next;
-            ListNode cur = start;
-
-            // 先把next赋空，方便下面的循环判断
-            end.next = null;
-            while (cur != null) {
-                ListNode next = cur.next;
-                cur.next = prev.next;
-                prev.next = cur;
-                cur = next;
-            }
-            prev = start;
-            end = start.next;
+            q = kthNode(nextPrev, k);
+            prev = nextPrev;
         }
-
         return sentinel.next;
+    }
+
+    private static ListNode kthNode(ListNode node, int k) {
+        while (node != null && k-- > 0) {
+            node = node.next;
+        }
+        return node;
     }
 }

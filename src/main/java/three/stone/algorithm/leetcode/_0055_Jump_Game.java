@@ -28,6 +28,18 @@ package three.stone.algorithm.leetcode;
  */
 public class _0055_Jump_Game {
     public boolean canJump(int[] nums) {
+        return helper(nums, nums.length - 1);
+    }
+
+    private boolean helper(int[] nums, int n) {
+        if (n == 0) {
+            return true;
+        }
+        for (int i = n - 1; i >= 0; i--) {
+            if (nums[i] >= n - i) {
+                return helper(nums, i);
+            }
+        }
         return false;
     }
 }
