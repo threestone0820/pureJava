@@ -17,29 +17,25 @@ import java.util.Map;
  * Explanation: 11 = 5 + 5 + 1
  */
 public class _0322_CoinChange {
-    private Map<Integer, Integer> dp = new HashMap<>();
     public int coinChange(int[] coins, int amount) {
-        if (amount < 0) {
-            return -1;
-        }
         if (amount == 0) {
             return 0;
         }
-        if (dp.containsKey(amount)) {
-            return dp.get(amount);
-        }
-        int min = Integer.MAX_VALUE;
-        for (int coin : coins) {
-            int subResult = coinChange(coins, amount - coin);
-            if (subResult != -1) {
-                min = Math.min(min, 1 + subResult);
+        Map<Integer, Integer> dp = new HashMap<>();
+        for (int i = 1; i <= amount; i++) {
+            int result = Integer.MAX_VALUE;
+            for (int coin : coins) {
+                if (coin == i) {
+                    result = 1;
+                } else if (coin < i) {
+                    if (dp.containsKey(i - coin) && dp.get(i - coin) != -1) {
+                        result = Math.min(result, dp.get(i - coin) + 1);
+                    }
+                }
             }
+            dp.put(i, result == Integer.MAX_VALUE ? -1 : result);
         }
-        if (min != Integer.MAX_VALUE) {
-            dp.put(amount, min);
-            return min;
-        } else {
-            return -1;
-        }
+        return dp.getOrDefault(amount, -1);
     }
+
 }

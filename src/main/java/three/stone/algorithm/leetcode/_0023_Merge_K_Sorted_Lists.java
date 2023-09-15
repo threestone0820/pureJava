@@ -21,21 +21,23 @@ import java.util.PriorityQueue;
  */
 public class _0023_Merge_K_Sorted_Lists {
     public ListNode mergeKLists(ListNode[] lists) {
-        ListNode dummy = new ListNode(0, null);
-        ListNode prev = dummy;
+        ListNode dummy = new ListNode(0), prev = dummy;
         PriorityQueue<ListNode> minHeap = new PriorityQueue<>(Comparator.comparingInt(node -> node.val));
         for (ListNode node : lists) {
-            if (null != node) {
+            if (node != null) {
                 minHeap.offer(node);
             }
         }
+
         while (!minHeap.isEmpty()) {
-            ListNode minNode = minHeap.poll();
-            if (minNode.next != null) {
-                minHeap.offer(minNode.next);
+            ListNode polledNode = minHeap.poll();
+            ListNode next = polledNode.next;
+            polledNode.next = null;
+            if (next != null) {
+                minHeap.offer(next);
             }
-            prev = prev.next = minNode;
-            minNode.next = null;
+            prev.next = polledNode;
+            prev = polledNode;
         }
         return dummy.next;
     }
