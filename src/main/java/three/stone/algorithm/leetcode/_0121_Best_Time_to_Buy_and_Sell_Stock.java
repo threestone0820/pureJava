@@ -13,28 +13,13 @@ package three.stone.algorithm.leetcode;
  */
 public class _0121_Best_Time_to_Buy_and_Sell_Stock {
     public int maxProfit(int[] prices) {
-        if (prices.length <= 1) {
-            return 0;
-        }
-        int profit = 0, min = prices[0];
-        for (int i = 1; i < prices.length; ++i) {
-            profit = Math.max(profit, prices[i] - min);
-            min = Math.min(min, prices[i]);
-        }
-
-        return profit;
-    }
-
-    public int maxProfit2(int[] prices) {
-        if (prices.length <= 1) {
-            return 0;
-        }
-        int profit = 0, localMax = 0;
+        int maxProfit = 0, localProfit = 0;
         for (int i = 1; i < prices.length; i++) {
-            localMax = Math.max(0, localMax + (prices[i] - prices[i - 1]));
-            profit = Math.max(profit, localMax);
+            localProfit = Math.max(prices[i] - prices[i - 1], localProfit + prices[i] - prices[i - 1]);
+            if (localProfit > maxProfit) {
+                maxProfit = localProfit;
+            }
         }
-
-        return profit;
+        return maxProfit;
     }
 }

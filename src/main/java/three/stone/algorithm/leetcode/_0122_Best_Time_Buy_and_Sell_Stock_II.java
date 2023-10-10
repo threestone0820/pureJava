@@ -28,23 +28,21 @@ package three.stone.algorithm.leetcode;
  */
 public class _0122_Best_Time_Buy_and_Sell_Stock_II {
     public int maxProfit(int[] prices) {
-        int profit = 0, length = prices.length;
-        if (length <= 1) {
-            return 0;
+        int profit = 0, n = prices.length, i = 0;
+        if (n < 2) {
+            return profit;
         }
-
-        for (int i = 0; i < length; ) {
-            while (i < length  - 1 && prices[i + 1] <= prices[i]) {
+        while (i < n) {
+            while (i + 1 < n && prices[i + 1] <= prices[i]) {
                 i++;
             }
-            int buy = i++;
-            while (i < length - 1 && prices[i + 1] > prices[i]) {
+            int buy = i;
+            while (i + 1 < n && prices[i + 1] > prices[i]) {
                 i++;
             }
-            int sell = i++;
-            if (buy < sell && sell < length) {
-                profit += prices[sell] - prices[buy];
-            }
+            int sell = i;
+            profit += (prices[sell] - prices[buy]);
+            i++;
         }
         return profit;
     }

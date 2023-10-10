@@ -34,12 +34,13 @@ public class _0045_Jump_Game_II {
         if (n == 0) {
             return 0;
         }
-        int minIndex = n;
+
+        int index = n - 1;
         for (int i = n - 1; i >= 0; i--) {
             if (nums[i] >= n - i) {
-                minIndex = Math.min(minIndex, i);
+                index = i;
             }
         }
-        return 1 + helper(nums, minIndex);
+        return 1 + helper(nums, index);
     }
 }

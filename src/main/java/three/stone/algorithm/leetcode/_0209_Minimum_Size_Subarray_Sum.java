@@ -15,11 +15,11 @@ package three.stone.algorithm.leetcode;
  */
 public class _0209_Minimum_Size_Subarray_Sum {
     public int minSubArrayLen(int target, int[] nums) {
-        int start = 0, end = 0, sum = 0, minLen = Integer.MAX_VALUE, length = nums.length;
-        while (end < length) {
+        int minLen = Integer.MAX_VALUE, start = 0, end = 0, sum = 0;
+        while (end < nums.length) {
             sum += nums[end++];
             while (sum >= target) {
-                minLen = Math.min(end - start, minLen);
+                minLen = Math.min(minLen, end - start);
                 sum -= nums[start++];
             }
         }

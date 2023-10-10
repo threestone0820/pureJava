@@ -15,18 +15,17 @@ package three.stone.algorithm.leetcode;
  */
 public class _0238_ProductOfArrayExceptSelf {
     public int[] productExceptSelf(int[] nums) {
-        int[] result = new int[nums.length];
-        int left = 1;
+        int n = nums.length;
+        int[] result = new int[n];
         result[0] = 1;
-        for (int i = 1; i < nums.length; i++) {
-            left = nums[i - 1] * left;
-            result[i] = left;
+        for (int i = 1; i < n; i++) {
+            result[i] = result[i - 1] * nums[i - 1];
         }
 
-        int right = 1;
-        for (int i = nums.length - 1; i >= 0; i--) {
-            result[i] = result[i] * right;
-            right = right * nums[i];
+        int postfix = nums[n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            result[i] = result[i] * postfix;
+            postfix = postfix * nums[i];
         }
         return result;
     }

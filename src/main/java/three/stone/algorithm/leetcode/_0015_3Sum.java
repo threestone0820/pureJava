@@ -23,40 +23,33 @@ public class _0015_3Sum {
     public static List<List<Integer>> threeSum2(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
         Arrays.sort(nums);
-        int i = 0;
-        while (i <= nums.length - 3) {
-            int first = nums[i];
-            List<List<Integer>> list = twoSum(nums, -first, i + 1, nums.length - 1);
-            if (!list.isEmpty()) {
-                for (List<Integer> l : list) {
-                    List<Integer> temp = new ArrayList<>(l);
-                    temp.add(first);
-                    result.add(temp);
+        for (int i = 0; i < nums.length; ) {
+            List<List<Integer>> subResults = twoSum(nums, -nums[i], i + 1, nums.length - 1);
+            if (!subResults.isEmpty()) {
+                for (List<Integer> subResult : subResults) {
+                    List<Integer> list = new ArrayList<>(subResult);
+                    list.add(nums[i]);
+                    result.add(list);
                 }
             }
-
-            while (i <= nums.length - 3 && nums[i] == first) {
+            i++;
+            while (i < nums.length && nums[i] == nums[i - 1]) {
                 i++;
             }
         }
         return result;
+
     }
 
     private static List<List<Integer>> twoSum(int[] nums, int target, int i, int j) {
         List<List<Integer>> result = new ArrayList<>();
         while (i < j) {
             if (nums[i] + nums[j] == target) {
-                int second = nums[i];
-                int third = nums[j];
-                result.add(Arrays.asList(second, third));
-
-                // 去重
-                while (i < j && second == nums[i]) {
+                result.add(new ArrayList<>(Arrays.asList(nums[i++], nums[j--])));
+                while (i < j && nums[i] == nums[i - 1]) {
                     i++;
                 }
-
-                // 去重
-                while (i < j && third == nums[j]) {
+                while (i < j && nums[j] == nums[j + 1]) {
                     j--;
                 }
             } else if (nums[i] + nums[j] > target) {

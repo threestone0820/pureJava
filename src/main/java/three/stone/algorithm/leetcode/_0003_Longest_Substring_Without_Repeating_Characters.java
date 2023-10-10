@@ -16,19 +16,17 @@ import java.util.Map;
  */
 public class _0003_Longest_Substring_Without_Repeating_Characters {
     public int lengthOfLongestSubstring(String s) {
-        Map<Character, Integer> map = new HashMap<>();
-        int start = 0, stop = 0, result = 0;
+        int start = 0, stop = 0, maxLen = 0;
+        Map<Character, Integer> counter = new HashMap<>();
         while (stop < s.length()) {
-            char ch = s.charAt(stop++);
-            int count = map.compute(ch, (key, oldValue) -> oldValue == null ? 1 : oldValue + 1);
-            if (count == 1) {
-                result = Math.max(stop - start, result);
+            char c = s.charAt(stop++);
+            Integer count = counter.merge(c, 1, (oldValue, unused) -> oldValue + 1);
+            while (count != 1) {
+                counter.merge(s.charAt(start++), 0, (oldValue, unused) -> oldValue - 1);
+                count = counter.get(c);
             }
-            while (count == 2) {
-                map.compute(s.charAt(start++), (key, oldValue) -> oldValue == 1 ? null : oldValue - 1);
-                count = map.get(ch);
-            }
+            maxLen = Math.max(maxLen, stop - start);
         }
-        return result;
+        return maxLen;
     }
 }
