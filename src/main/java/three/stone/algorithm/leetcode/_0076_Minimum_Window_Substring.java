@@ -24,37 +24,39 @@ import java.util.Map;
  */
 public class _0076_Minimum_Window_Substring {
     public String minWindowII(String s, String t) {
-        Map<Character, Integer> numMap = new HashMap<>();
-        for (char c : t.toCharArray()) {
-            numMap.merge(c, 1, (oldVal, unused) -> oldVal + 1);
+        Map<Character, Integer> counter = new HashMap<>();
+        for (int i = 0; i < t.length(); i++) {
+            char c = t.charAt(i);
+            counter.put(c, counter.getOrDefault(c, 0) + 1);
         }
-        int finalStart = 0, finalEnd = Integer.MAX_VALUE, start = 0, end = 0, count = t.length();
-        char[] chars = s.toCharArray();
-        while (end < s.length()) {
-            char ch = chars[end++];
-            Integer num = numMap.get(ch);
-            if (num != null) {
-                numMap.put(ch, num - 1);
-                if (num > 0) {
-                    count--;
-                }
-            }
 
-            while (count == 0) {
-                if (end - start < finalEnd - finalStart) {
-                    finalEnd = end;
-                    finalStart = start;
+        int start = 0, stop = 0, minLen = Integer.MAX_VALUE, num = t.length(), findNum = 0, finalStart = 0, finalStop = 0;
+        while (stop < s.length()) {
+            char c = s.charAt(stop++);
+            Integer needCount = counter.get(c);
+            if (needCount != null) {
+                if (needCount > 0) {
+                    findNum++;
                 }
-                char ch2 = chars[start++];
-                Integer num2 = numMap.get(ch2);
-                if (num2 != null) {
-                    numMap.put(ch2, num2 + 1);
-                    if (num2 == 0) {
-                        count++;
+                counter.put(c, needCount - 1);
+                while (findNum == num) {
+                    if (stop - start < minLen) {
+                        minLen = stop - start;
+                        finalStart = start;
+                        finalStop = stop;
+                    }
+                    char removed = s.charAt(start++);
+                    Integer removedCount = counter.get(removed);
+                    if (removedCount != null) {
+                        if (removedCount == 0) {
+                            findNum--;
+                        }
+                        counter.put(removed, removedCount + 1);
                     }
                 }
             }
         }
-        return finalEnd == Integer.MAX_VALUE ? "" : s.substring(finalStart, finalEnd);
+
+        return minLen == Integer.MAX_VALUE ? "" : s.substring(finalStart, finalStop);
     }
 }
