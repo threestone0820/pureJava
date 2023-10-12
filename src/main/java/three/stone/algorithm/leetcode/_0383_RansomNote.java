@@ -1,5 +1,8 @@
 package three.stone.algorithm.leetcode;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Given two strings ransomNote and magazine, return true if ransomNote
  * can be constructed by using the letters from magazine and false otherwise.
@@ -17,17 +20,18 @@ package three.stone.algorithm.leetcode;
  */
 public class _0383_RansomNote {
     public boolean canConstruct(String ransomNote, String magazine) {
-        int[] counter = new int[26];
-        for (char c : ransomNote.toCharArray()) {
-            counter[c - 'a']++;
+        Map<Character, Integer> counter = new HashMap<>();
+        for (int i = 0; i < magazine.length(); i++) {
+            char ch = magazine.charAt(i);
+            counter.put(ch, counter.getOrDefault(ch, 0) + 1);
         }
-        for (char c : magazine.toCharArray()) {
-            counter[c - 'a']--;
-        }
-        for (int i : counter) {
-            if (i > 0) {
+        for (int i = 0; i < ransomNote.length(); i++) {
+            char ch = ransomNote.charAt(i);
+            Integer num = counter.getOrDefault(ch, 0);
+            if (num == 0) {
                 return false;
             }
+            counter.put(ch, num - 1);
         }
         return true;
     }
