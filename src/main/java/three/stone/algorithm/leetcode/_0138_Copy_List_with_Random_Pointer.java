@@ -18,43 +18,35 @@ import java.util.Map;
 public class _0138_Copy_List_with_Random_Pointer {
     public Node copyRandomList(Node head) {
         if (head == null) {
-            return head;
+            return null;
         }
-        // 用map记录了每个node的位置，为了正确的赋值random指针，新的链表也要从前往后找到对应的位置
-        Map<Node, Integer> map = new HashMap<>();
-        Node p = head;
-        int index = 0;
+        Map<Node, Integer> map1 = new HashMap<>();
+        Map<Integer, Node> map2 = new HashMap<>();
+        Node dummy = new Node(0), p = head, q = dummy;
+        Integer index = 0;
         while (p != null) {
-            map.put(p, index++);
-            p = p.next;
-        }
+            Node copiedNode = new Node(p.val);
+            map1.put(p, index);
+            map2.put(index, copiedNode);
+            index++;
 
-        p = head;
-        Node sentinel = new Node(0);
-        Node q = sentinel;
-        while (p != null) {
-            q.next = new Node(p.val);
+            q.next = copiedNode;
             q = q.next;
             p = p.next;
         }
 
         p = head;
-        q = sentinel.next;
+        q = dummy.next;
         while (p != null) {
-            if (p.random != null) {
-                index = map.get(p.random);
-                Node r = sentinel.next;
-                while (index > 0) {
-                    r = r.next;
-                    index--;
-                }
-                q.random = r;
+            if (p.random == null) {
+                q.random = null;
+            } else {
+                q.random = map2.get(map1.get(p.random));
             }
             p = p.next;
             q = q.next;
         }
-
-        return sentinel.next;
+        return dummy.next;
     }
 
     public Node copyRandomListII(Node head) {

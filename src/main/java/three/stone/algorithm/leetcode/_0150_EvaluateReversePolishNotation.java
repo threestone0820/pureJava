@@ -2,6 +2,7 @@ package three.stone.algorithm.leetcode;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.Stack;
 
@@ -24,28 +25,23 @@ import java.util.Stack;
  */
 public class _0150_EvaluateReversePolishNotation {
     public int evalRPN(String[] tokens) {
-        Set<String> operators = new HashSet<>(Arrays.asList("+", "-", "*", "/"));
+        Set<String> ops = new HashSet<>(Arrays.asList("+", "-", "*", "/"));
         Stack<Integer> stack = new Stack<>();
         for (String token : tokens) {
-            if (!operators.contains(token)) {
-                stack.push(Integer.valueOf(token));
-            } else {
-                Integer value2 = stack.pop();
-                Integer value1 = stack.pop();
-                switch (token) {
-                    case "+":
-                        stack.push(value1 + value2);
-                        break;
-                    case "-":
-                        stack.push(value1 - value2);
-                        break;
-                    case "*":
-                        stack.push(value1 * value2);
-                        break;
-                    case "/":
-                        stack.push(value1 / value2);
-                        break;
+            if (ops.contains(token)) {
+                Integer op2 = stack.pop();
+                Integer op1 = stack.pop();
+                if ("+".equals(token)) {
+                    stack.push(op1 + op2);
+                } else if ("-".equals(token)) {
+                    stack.push(op1 - op2);
+                } else if ("*".equals(token)) {
+                    stack.push(op1 * op2);
+                } else {
+                    stack.push(op1 / op2);
                 }
+            } else {
+                stack.push(Integer.valueOf(token));
             }
         }
         return stack.pop();

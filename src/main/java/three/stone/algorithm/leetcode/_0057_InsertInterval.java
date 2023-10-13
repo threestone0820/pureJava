@@ -21,42 +21,42 @@ import java.util.List;
 public class _0057_InsertInterval {
     public int[][] insert(int[][] intervals, int[] newInterval) {
         List<int[]> result = new ArrayList<>();
-        if (intervals == null || intervals.length == 0) {
+        int len = intervals.length;
+        if (len == 0 || newInterval[1] < intervals[0][0]) {
             result.add(newInterval);
-        } else if (newInterval[1] < intervals[0][0]) {
-            result.add(newInterval);
-            result.addAll(Arrays.asList(intervals));
-        } else if (newInterval[0] > intervals[intervals.length - 1][1]) {
-            result.addAll(Arrays.asList(intervals));
+            addAllRemainIntervals(result, intervals, 0);
+        } else if (newInterval[0] > intervals[len - 1][1]) {
+            addAllRemainIntervals(result, intervals, 0);
             result.add(newInterval);
         } else {
-            int length = intervals.length;
-            for (int i = 0; i < length; i++) {
-                if (newInterval[0] > intervals[i][1]) {
-                    result.add(intervals[i]);
-                } else  {
-                    int j;
-                    if (newInterval[1] < intervals[i][0]) {
-                        result.add(newInterval);
-                        j = i;
-                    } else {
-                        int left = Math.min(intervals[i][0], newInterval[0]);
-                        int right = Math.max(intervals[i][1], newInterval[1]);
-                        j = i + 1;
-                        while (j < length && intervals[j][0] <= right) {
-                            right = Math.max(right, intervals[j++][1]);
-                        }
-                        result.add(new int[]{left, right});
+            int left = newInterval[0], right = newInterval[1];
+            for (int i = 0; i < len; ) {
+                int[] interval = intervals[i];
+                if (interval[1] < left) {
+                    result.add(interval);
+                    i++;
+                } else if (right < interval[0]) {
+                    result.add(newInterval);
+                    addAllRemainIntervals(result, intervals, i);
+                    break;
+                } else {
+                    while (i < len && intervals[i][0] <= right) {
+                        left = Math.min(left, intervals[i][0]);
+                        right = Math.max(right, intervals[i][1]);
+                        i++;
                     }
-
-                    while (j < length) {
-                        result.add(intervals[j++]);
-                    }
+                    result.add(new int[]{left, right});
+                    addAllRemainIntervals(result, intervals, i);
                     break;
                 }
             }
         }
+        return result.toArray(new int[0][0]);
+    }
 
-        return result.toArray(new int[0][]);
+    private void addAllRemainIntervals(List<int[]> result, int[][] intervals, int index) {
+        while (index < intervals.length) {
+            result.add(intervals[index++]);
+        }
     }
 }

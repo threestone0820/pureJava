@@ -17,9 +17,9 @@ import java.util.List;
  */
 public class _0056_Merge_Intervals {
     public int[][] merge(int[][] intervals) {
-        Arrays.sort(intervals, Comparator.comparingInt(arr -> arr[0]));
         List<int[]> result = new ArrayList<>();
-        for (int i = 0; i < intervals.length; i++) {
+        Arrays.sort(intervals, Comparator.comparingInt(arr -> arr[0]));
+        for (int i = 0; i < intervals.length; ) {
             int left = intervals[i][0];
             int right = intervals[i][1];
             int j = i + 1;
@@ -30,9 +30,9 @@ public class _0056_Merge_Intervals {
                     right = Math.max(right, intervals[j][1]);
                 }
             }
-            i = j;
             result.add(new int[]{left, right});
+            i = j;
         }
-        return result.toArray(new int[0][]);
+        return result.toArray(new int[0][0]);
     }
 }

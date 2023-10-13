@@ -9,23 +9,29 @@ package three.stone.algorithm.leetcode;
  *
  */
 public class _0021_Merge_Two_Sorted_Lists {
-    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-        ListNode dummy = new ListNode(0, null);
-        ListNode p = dummy;
-        while (l1 != null && l2 != null) {
-            ListNode next;
-            if (l1.val < l2.val) {
-                next = l1;
-                l1 = l1.next;
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode dummy = new ListNode(0, null), p = list1, q = list2, prev = dummy;
+        while (p != null || q != null) {
+            if (p != null && q != null) {
+                ListNode min;
+                if (p.val < q.val) {
+                    min = p;
+                    p = p.next;
+                } else {
+                    min = q;
+                    q = q.next;
+                }
+                prev.next = min;
+                prev = prev.next;
+                min.next = null;
+            } else if (p != null) {
+                prev.next = p;
+                break;
             } else {
-                next = l2;
-                l2 = l2.next;
+                prev.next = q;
+                break;
             }
-            next.next = null;
-            p.next = next;
-            p = next;
         }
-        p.next = l1 != null ? l1 : l2;
         return dummy.next;
     }
 

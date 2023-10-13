@@ -14,24 +14,21 @@ package three.stone.algorithm.leetcode;
  */
 public class _0092_Reverse_Linked_List_II {
     public ListNode reverseBetween(ListNode head, int left, int right) {
-        if (null == head || null == head.next || left == right) {
-            return head;
+        ListNode dummy = new ListNode(0, head), leftPrev = dummy, rightNode = dummy;
+        while (left-- > 1) {
+            leftPrev = leftPrev.next;
         }
-        ListNode dummy = new ListNode(0, head), prev = dummy, p = head, q = head;
-        while (--left > 0) {
-            prev = prev.next;
-            p = p.next;
+        while (right-- > 0) {
+            rightNode = rightNode.next;
         }
-        while (--right > 0) {
-            q = q.next;
-        }
-        prev.next = q.next;
-        q.next = null;
-        while (p != null) {
-            ListNode next = p.next;
-            p.next = prev.next;
-            prev.next = p;
-            p = next;
+        ListNode node = leftPrev.next;
+        leftPrev.next = rightNode.next;
+        rightNode.next = null;
+        while (node != null) {
+            ListNode temp = node.next;
+            node.next = leftPrev.next;
+            leftPrev.next = node;
+            node = temp;
         }
         return dummy.next;
     }

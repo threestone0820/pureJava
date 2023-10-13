@@ -1,5 +1,7 @@
 package three.stone.algorithm.leetcode;
 
+import sun.tools.jstat.Jstat;
+
 import java.util.Stack;
 
 /**
@@ -32,24 +34,20 @@ import java.util.Stack;
 public class _0020_Valid_Parentheses {
     public boolean isValid(String s) {
         Stack<Character> stack = new Stack<>();
-        for (char c : s.toCharArray()) {
-            if (c == '(' || c == '[' || c == '{') {
-                stack.push(c);
-            } else if (c == ')'){
-                if (stack.isEmpty() || stack.pop() != '(') {
+        for (int i = 0; i < s.length(); i++) {
+            char ch1 = s.charAt(i);
+            if (ch1 == '(' || ch1 == '[' || ch1 == '{') {
+                stack.push(ch1);
+            } else {
+                if (stack.isEmpty()) {
                     return false;
                 }
-            } else if (c == ']') {
-                if (stack.isEmpty() || stack.pop() != '[') {
-                    return false;
-                }
-            } else if (c == '}') {
-                if (stack.isEmpty() || stack.pop() != '{') {
+                Character ch2 = stack.pop();
+                if ((ch1 == ')' && ch2 != '(') || (ch1 == ']' && ch2 != '[') || (ch1 == '}' && ch2 != '{')) {
                     return false;
                 }
             }
         }
-
         return stack.isEmpty();
     }
 

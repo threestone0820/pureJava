@@ -39,13 +39,12 @@ public class _0155_MinStack {
     }
 
     public void push(int val) {
-        int minVal;
         if (stack.isEmpty()) {
-            minVal = val;
+            stack.push(new Node(val, val));
         } else {
-            minVal = Math.min(val, stack.peek().minVal);
+            int curMin = stack.peek().minVal;
+            stack.push(new Node(val, Math.min(curMin, val)));
         }
-        stack.push(new Node(val, minVal));
     }
 
     public void pop() {

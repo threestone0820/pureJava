@@ -15,17 +15,16 @@ public class _0141_Linked_List_Cycle {
             return false;
         }
 
-        ListNode slow = head, quick = slow.next;
+        ListNode slow = head, quick = head.next;
         while (quick != null) {
             if (slow == quick) {
                 return true;
             }
-            slow = slow.next;
             if (quick.next == null) {
                 return false;
-            } else {
-                quick = quick.next.next;
             }
+            slow = slow.next;
+            quick = quick.next.next;
         }
         return false;
     }

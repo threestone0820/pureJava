@@ -11,28 +11,22 @@ package three.stone.algorithm.leetcode;
  */
 public class _0082_Remove_Duplicates_from_Sorted_List_II {
     public ListNode deleteDuplicates(ListNode head) {
-        if (null == head || head.next == null) {
-            return head;
-        }
-
-        ListNode sentinel = new ListNode(0);
-        sentinel.next = head;
-        //三指针移动
-        ListNode tail = sentinel, p = sentinel, cur = head, q = head.next;
-        while (cur != null) {
-            if ((p == sentinel || p.val != cur.val) &&
-                    (q == null || q.val != cur.val)) {
-                tail.next = cur;
-                tail = cur;
-            }
-            p = p.next;
-            cur = cur.next;
-            if (q != null) {
-                q = q.next;
+        ListNode sentinel = new ListNode(0, head), prev = head;
+        while (head != null) {
+            if (head.next == null || head.next.val != head.val) {
+                head = head.next;
+                prev = prev.next;
+            } else {
+                int value = head.val;
+                while (head != null && head.val == value) {
+                    head = head.next;
+                }
+                if (head != null) {
+                    head = head.next;
+                    prev.next = head;
+                }
             }
         }
-        tail.next = null;
-
         return sentinel.next;
     }
 }

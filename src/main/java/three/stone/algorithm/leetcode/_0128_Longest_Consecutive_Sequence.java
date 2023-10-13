@@ -25,24 +25,23 @@ import java.util.Set;
  */
 public class _0128_Longest_Consecutive_Sequence {
     public int longestConsecutive(int[] nums) {
-        if (null == nums || nums.length == 0) {
+        if (nums == null || nums.length == 0) {
             return 0;
         }
         Set<Integer> set = new HashSet<>();
         for (int num : nums) {
             set.add(num);
         }
-
         int result = 0;
-        for (Integer i : set) {
-            // awesome idea
-            if (!set.contains(i - 1)) {
-                int current = 0;
-                while (set.contains(i)) {
-                    i++;
-                    current++;
+        for (Integer num : set) {
+            // 找到最小的那个
+            if (!set.contains(num - 1)) {
+                int local = 1;
+                while (set.contains(num + 1)) {
+                    local++;
+                    num++;
                 }
-                result = Math.max(result, current);
+                result = Math.max(result, local);
             }
         }
         return result;

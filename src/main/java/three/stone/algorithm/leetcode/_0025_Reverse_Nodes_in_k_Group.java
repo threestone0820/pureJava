@@ -1,5 +1,7 @@
 package three.stone.algorithm.leetcode;
 
+import java.util.List;
+
 /**
  * Given a linked list, reverse the nodes of a linked list k at a time and return its modified list.
  *
@@ -22,31 +24,27 @@ package three.stone.algorithm.leetcode;
  */
 public class _0025_Reverse_Nodes_in_k_Group {
     public static ListNode reverseKGroup(ListNode head, int k) {
-        if (head == null || k == 1) {
-            return head;
-        }
-
-        ListNode sentinel = new ListNode(0, head);
-        ListNode prev = sentinel, q = kthNode(prev, k);
-        while (q != null) {
-            ListNode nextPrev = prev.next;
-            ListNode p = prev.next;
-            prev.next = q.next;
-            q.next = null;
+        ListNode sentinel = new ListNode(0, head), prev = sentinel;
+        ListNode start = head, end = kthNode(head, k);
+        while (end != null) {
+            prev.next = end.next;
+            end.next = null;
+            ListNode p = start;
             while (p != null) {
-                ListNode next = p.next;
+                ListNode temp = p.next;
                 p.next = prev.next;
                 prev.next = p;
-                p = next;
+                p = temp;
             }
-            q = kthNode(nextPrev, k);
-            prev = nextPrev;
+            prev = start;
+            start = prev.next;
+            end = kthNode(start, k);
         }
         return sentinel.next;
     }
 
     private static ListNode kthNode(ListNode node, int k) {
-        while (node != null && k-- > 0) {
+        while (node != null && --k > 0) {
             node = node.next;
         }
         return node;
