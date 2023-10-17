@@ -7,17 +7,22 @@ package three.stone.algorithm.leetcode;
  * p and q will exist in the tree.
  */
 public class _0236_LowestCommonAncestorOfBinaryTree {
+    TreeNode result = null;
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if (root == null || root.val == p.val || root.val == q.val) {
-            return root;
-        }
+        helper(root, p, q);
+        return result;
+    }
 
-        TreeNode left = lowestCommonAncestor(root.left, p, q);
-        TreeNode right = lowestCommonAncestor(root.right, p, q);
-        if (left != null && right != null) {
-            return root;
+    private boolean helper(TreeNode node, TreeNode p, TreeNode q) {
+        if (node == null) {
+            return false;
         }
-
-        return left != null ? left : right;
+        boolean leftFind = helper(node.left, p, q);
+        boolean rightFind = helper(node.right, p, q);
+        boolean curFind = node.val == p.val || node.val == q.val;
+        if ((curFind && (leftFind || rightFind)) || (leftFind && rightFind)) {
+            result = node;
+        }
+        return leftFind || rightFind || curFind;
     }
 }

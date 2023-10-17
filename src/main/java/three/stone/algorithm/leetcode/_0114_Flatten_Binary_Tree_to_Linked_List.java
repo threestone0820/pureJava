@@ -1,5 +1,8 @@
 package three.stone.algorithm.leetcode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  Given the root of a binary tree, flatten the tree into a "linked list":
@@ -8,17 +11,23 @@ package three.stone.algorithm.leetcode;
  The "linked list" should be in the same order as a pre-order traversal of the binary tree.
  */
 public class _0114_Flatten_Binary_Tree_to_Linked_List {
-    //全局变量
-    private TreeNode prev = null;
 
     public void flatten(TreeNode root) {
-        if (root == null) {
+        List<TreeNode> list = new ArrayList<>();
+        preOrder(list, root);
+        for (int i = 0; i < list.size(); i++) {
+            TreeNode node = list.get(i);
+            node.left = null;
+            node.right = i == list.size() - 1 ? null : list.get(i + 1);
+        }
+    }
+
+    private void preOrder(List<TreeNode> list, TreeNode node) {
+        if (node == null) {
             return;
         }
-        flatten(root.right);
-        flatten(root.left);
-        root.right = prev;
-        root.left = null;
-        prev = root;
+        list.add(node);
+        preOrder(list, node.left);
+        preOrder(list, node.right);
     }
 }

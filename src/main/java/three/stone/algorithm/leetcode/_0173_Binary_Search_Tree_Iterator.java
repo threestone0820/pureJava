@@ -19,7 +19,7 @@ import java.util.Stack;
  */
 public class _0173_Binary_Search_Tree_Iterator {
     class BSTIterator {
-        private Stack<TreeNode> stack = new Stack<>();
+        Stack<TreeNode> stack = new Stack<>();
 
         public BSTIterator(TreeNode root) {
             while (root != null) {
@@ -30,13 +30,13 @@ public class _0173_Binary_Search_Tree_Iterator {
 
         public int next() {
             TreeNode node = stack.pop();
-            int val = node.val;
-            TreeNode right = node.right;
-            while (right != null) {
-                stack.push(right);
-                right = right.left;
+            int result = node.val;
+            node = node.right;
+            while (node != null) {
+                stack.push(node);
+                node = node.left;
             }
-            return val;
+            return result;
         }
 
         public boolean hasNext() {

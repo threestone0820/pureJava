@@ -5,6 +5,8 @@ package three.stone.algorithm.leetcode;
  * and postorder is the postorder traversal of the same tree, construct and return the binary tree.
  *
  * inorder and postorder consist of unique values.
+ *
+ * inorder = [9,3,15,20,7], postorder = [9,15,7,20,3]
  */
 public class _0106_ConstructBinaryTreeFromInorderAndPostorderTraversal {
     public TreeNode buildTree(int[] inorder, int[] postorder) {
@@ -16,18 +18,15 @@ public class _0106_ConstructBinaryTreeFromInorderAndPostorderTraversal {
         if (inStart > inEnd || postStart > postEnd) {
             return null;
         }
-        int rootVal = postorder[postEnd];
-        TreeNode node = new TreeNode(rootVal);
-        int index = 0;
-        for (int i = inStart; i <= inEnd; i++) {
-            if (inorder[i] == rootVal) {
-                index = i;
-                break;
-            }
+        int rootVal = postorder[postEnd], leftLen = 0;
+        while (inorder[inStart + leftLen] != rootVal) {
+            leftLen++;
         }
-        int leftLen = index - inStart;
-        node.left = helper(inorder, inStart, index - 1, postorder, postStart, postStart + leftLen - 1);
-        node.right = helper(inorder, index + 1, inEnd, postorder, postStart + leftLen, postEnd - 1);
-        return node;
+        TreeNode root = new TreeNode(rootVal);
+        root.left = helper(inorder, inStart, inStart + leftLen - 1,
+                postorder, postStart, postStart + leftLen - 1);
+        root.right = helper(inorder, inStart + leftLen + 1, inEnd,
+                postorder, postStart + leftLen, postEnd - 1);
+        return root;
     }
 }

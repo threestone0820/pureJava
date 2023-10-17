@@ -41,22 +41,22 @@ import java.util.Map;
  */
 public class _0146_LRUCache {
     int capacity;
-    Map<Integer, Node<Integer, Integer>> map;
-    Node<Integer, Integer> head;
-    Node<Integer, Integer> tail;
+    Map<Integer, Node> map;
+    Node head;
+    Node tail;
 
     public _0146_LRUCache(int capacity) {
         this.capacity = capacity;
         this.map = new HashMap<>();
-        this.head = new Node<>(0, 0);
-        this.tail = new Node<>(0, 0);
+        this.head = new Node(0, 0);
+        this.tail = new Node(0, 0);
         head.next = tail;
         tail.prev = head;
     }
 
     public int get(int key) {
-        if (map.containsKey(key)) {
-            Node<Integer, Integer> node = map.get(key);
+        Node node = map.get(key);
+        if (node != null) {
             visitNode(node);
             return node.value;
         }
@@ -64,58 +64,48 @@ public class _0146_LRUCache {
     }
 
     public void put(int key, int value) {
-        Node<Integer, Integer> node = map.get(key);
+        Node node = map.get(key);
         if (node != null) {
             node.value = value;
             visitNode(node);
         } else {
-            if (map.size() >= capacity) {
-                Node<Integer, Integer> movedNode = tail.prev;
-                movedNode.prev.next = tail;
-                tail.prev = movedNode.prev;
-                map.remove(movedNode.key);
-                movedNode.prev = null;
-                movedNode.next = null;
-            }
-
-            node = new Node<>(key, value);
+            node = new Node(key, value);
             map.put(key, node);
-            headInsert(node);
+            insertHead(node);
+            if (map.size() > capacity) {
+                Node removed = tail.prev;
+                removed.prev.next = tail;
+                tail.prev = removed.prev;
+                removed.prev = null;
+                removed.next = null;
+                map.remove(removed.key);
+            }
         }
     }
 
-    private void visitNode(Node<Integer, Integer> node) {
+    private void visitNode(Node node) {
         node.prev.next = node.next;
         node.next.prev = node.prev;
-        headInsert(node);
+        insertHead(node);
     }
 
-    private void headInsert(Node<Integer, Integer> node) {
-        node.next = head.next;
+    private void insertHead(Node node) {
         node.prev = head;
+        node.next = head.next;
         head.next.prev = node;
         head.next = node;
     }
+    private static class Node {
+        Integer key;
+        Integer value;
+        Node next;
+        Node prev;
 
-    private static class Node<K, V> {
-        K key;
-        V value;
-        Node<K, V> next;
-        Node<K, V> prev;
-
-        public Node(K key, V value) {
+        public Node(Integer key, Integer value) {
             this.key = key;
             this.value = value;
         }
     }
 
-    public static void main(String[] args) {
-        _0146_LRUCache lruCache = new _0146_LRUCache(2);
-        lruCache.put(1, 1);
-        lruCache.put(2, 2);
-        lruCache.get(1);
-        lruCache.put(3, 3);
-        lruCache.get(1);
-    }
 
 }

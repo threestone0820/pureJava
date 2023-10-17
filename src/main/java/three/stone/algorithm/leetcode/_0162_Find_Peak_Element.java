@@ -29,26 +29,20 @@ package three.stone.algorithm.leetcode;
  */
 public class _0162_Find_Peak_Element {
     public int findPeakElement(int[] nums) {
-        int length = nums.length;
-        int low = 0, high = length - 1;
+        int low = 0, high = nums.length - 1;
         while (low <= high) {
-            int mid = (low + high) >> 1;
-            int num = nums[mid];
-            boolean left = mid == 0 || num > nums[mid - 1];
-            boolean right = mid == length - 1 || num > nums[mid + 1];
+            int mid = low + (high - low) / 2;
+            boolean left = mid == 0 || nums[mid] > nums[mid - 1];
+            boolean right = mid == nums.length - 1 || nums[mid] > nums[mid + 1];
             if (left && right) {
                 return mid;
             }
-
-            // 注意，有可能！left和！right都为ture，所以要用else语句
-            // 这样才能保证 high 和 low 在一次循环中只有一个值被更新
             if (!left) {
                 high = mid - 1;
             } else {
                 low = mid + 1;
             }
         }
-
         return -1;
     }
 }

@@ -11,13 +11,11 @@ public class _0112_Path_Sum {
         if (root == null) {
             return false;
         }
-        if (root.left == null && root.right == null && root.val == targetSum) {
+        if (root.val == targetSum && root.left == null && root.right == null) {
             return true;
         }
-        if (hasPathSum(root.left, targetSum - root.val)) {
-            return true;
-        }
-        return hasPathSum(root.right, targetSum - root.val);
+        return hasPathSum(root.left, targetSum - root.val) ||
+                hasPathSum(root.right, targetSum - root.val);
     }
 
 

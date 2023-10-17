@@ -16,11 +16,13 @@ import java.util.PriorityQueue;
  * void addNum(int num) adds the integer num from the data stream to the data structure.
  * double findMedian() returns the median of all elements so far.
  * Answers within 10-5 of the actual answer will be accepted.
+ *
+ * 1, 2, 3 , 10, 11, 12
  */
 public class _0295_FindMedianFromDataStream {
-    static class MedianFinder {
-        private PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Comparator.reverseOrder());
+    class MedianFinder {
         private PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        private PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Comparator.reverseOrder());
 
         public MedianFinder() {
 

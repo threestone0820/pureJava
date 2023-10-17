@@ -7,6 +7,7 @@ package three.stone.algorithm.leetcode;
  *
  * preorder and inorder consist of unique values.
  * Each value of inorder also appears in preorder.
+ * preorder = [3,9,20,15,7], inorder = [9,3,15,20,7]
  */
 public class _0105_ConstructBinaryTreeFromPreorderAndInorder {
     public TreeNode buildTree(int[] preorder, int[] inorder) {
@@ -15,27 +16,18 @@ public class _0105_ConstructBinaryTreeFromPreorderAndInorder {
 
     private TreeNode buildTreeHelper(int[] preorder, int preStart, int preEnd,
                                      int[] inorder, int inStart, int inEnd) {
-        int rootVal = preorder[preStart];
+        if (preStart > preEnd || inStart > inEnd) {
+            return null;
+        }
+        int rootVal = preorder[preStart], leftLen = 0;
+        while (inorder[inStart + leftLen] != rootVal) {
+            leftLen++;
+        }
         TreeNode root = new TreeNode(rootVal);
-        int rootIndex = 0;
-        for (int i = inStart; i <= inEnd; i++) {
-            if (inorder[i] == rootVal) {
-                rootIndex = i;
-                break;
-            }
-        }
-        int leftLength = rootIndex - inStart;
-        if (leftLength == 0) {
-            root.left = null;
-        } else {
-            root.left = buildTreeHelper(preorder, preStart + 1, preStart + leftLength, inorder, inStart, rootIndex - 1);
-        }
-        int rightLength = inEnd - rootIndex;
-        if (rightLength == 0) {
-            root.right = null;
-        } else {
-            root.right = buildTreeHelper(preorder, preStart + leftLength + 1, preEnd, inorder, rootIndex + 1, inEnd);
-        }
+        root.left = buildTreeHelper(preorder, preStart + 1, preStart + leftLen,
+                inorder, inStart, inStart + leftLen - 1);
+        root.right = buildTreeHelper(preorder, preStart + leftLen + 1, preEnd,
+                inorder, inStart + leftLen + 1, inEnd);
         return root;
     }
 }

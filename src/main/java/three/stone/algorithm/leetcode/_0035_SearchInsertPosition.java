@@ -1,7 +1,9 @@
 package three.stone.algorithm.leetcode;
 
 /**
- * Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
+ * Given a sorted array of distinct integers and a target value,
+ * return the index if the target is found.
+ * If not, return the index where it would be if it were inserted in order.
  *
  * You must write an algorithm with O(log n) runtime complexity.
  *
@@ -18,33 +20,27 @@ package three.stone.algorithm.leetcode;
  */
 public class _0035_SearchInsertPosition {
     public int searchInsert(int[] nums, int target) {
-        int length = nums.length;
-        if (target > nums[length - 1]) {
-            return length;
-        }
-        if (target < nums[0]) {
-            return 0;
-        }
-
-        int low = 0, high = length - 1;
-        while (low <= high) {
-            int mid = low + (high - low) / 2;
+        int i = 0, j = nums.length - 1;
+        while (i <= j) {
+            int mid = i + (j - i) / 2;
             if (nums[mid] == target) {
                 return mid;
             }
-            if (low == high) {
+
+            if (i == j) {
                 break;
             }
             if (nums[mid] > target) {
-                high = mid - 1;
+                j = mid - 1;
             } else {
-                low = mid + 1;
+                i = mid + 1;
             }
         }
-        if (target > nums[low]) {
-            return low + 1;
+
+        if (target > nums[i]) {
+            return i + 1;
         } else {
-            return low;
+            return i;
         }
     }
 }

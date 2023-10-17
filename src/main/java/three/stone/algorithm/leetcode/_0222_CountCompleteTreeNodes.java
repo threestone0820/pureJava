@@ -14,6 +14,7 @@ public class _0222_CountCompleteTreeNodes {
         if (root == null) {
             return 0;
         }
+
         int leftDepth = 1, rightDepth = 1;
         TreeNode node = root;
         while (node.left != null) {
@@ -28,7 +29,7 @@ public class _0222_CountCompleteTreeNodes {
         if (leftDepth == rightDepth) {
             return (int) Math.pow(2, leftDepth) - 1;
         } else {
-            return countNodes(root.left) + countNodes(root.right) + 1;
+            return 1 + countNodes(root.left) + countNodes(root.right);
         }
     }
 }

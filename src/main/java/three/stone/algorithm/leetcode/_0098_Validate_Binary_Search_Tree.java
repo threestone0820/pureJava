@@ -45,7 +45,8 @@ public class _0098_Validate_Binary_Search_Tree {
         if (node == null) {
             return true;
         }
-        if (!inOrderBST(node.left)) {
+        boolean left = inOrderBST(node.left);
+        if (!left) {
             return false;
         }
         if (preNode != null && preNode.val >= node.val) {

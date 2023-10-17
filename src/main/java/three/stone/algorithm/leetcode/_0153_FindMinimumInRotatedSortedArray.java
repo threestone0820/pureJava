@@ -16,10 +16,16 @@ package three.stone.algorithm.leetcode;
 public class _0153_FindMinimumInRotatedSortedArray {
     public int findMin(int[] nums) {
         int low = 0, high = nums.length - 1;
-        while (low < high) {
+        if (nums[0] < nums[nums.length - 1]) {
+            return nums[0];
+        }
+        while (low <= high) {
+            if (low == high) {
+                break;
+            }
             int mid = low + (high - low) / 2;
-            int cur = nums[mid];
-            if (cur >= nums[low] && cur > nums[high]) {
+            int num = nums[mid];
+            if (num > nums[high]) {
                 low = mid + 1;
             } else {
                 high = mid;

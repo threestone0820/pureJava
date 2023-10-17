@@ -17,20 +17,25 @@ import java.util.List;
 public class _0022_Generate_Parentheses {
     public List<String> generateParenthesis(int n) {
         List<String> result = new ArrayList<>();
-        recursion(n, result, 0, 0, "");
+        backtrace(result, new StringBuilder(), 0, 0, n);
         return result;
     }
 
-    private void recursion(int n, List<String> result, int left, int right, String temp) {
+    private void backtrace(List<String> result, StringBuilder builder, int left, int right, int n) {
         if (left == n && right == n) {
-            result.add(temp);
-            return;
-        }
-        if (left < n) {
-            recursion(n, result, left + 1, right, temp + "(");
-        }
-        if (left > right) {
-            recursion(n, result, left, right + 1, temp + ")");
+            result.add(builder.toString());
+        } else {
+            if (left < n) {
+                builder.append('(');
+                backtrace(result, builder, left + 1, right, n);
+                builder.deleteCharAt(builder.length() - 1);
+            }
+            if (left > right) {
+                builder.append(')');
+                backtrace(result, builder, left, right + 1, n);
+                builder.deleteCharAt(builder.length() - 1);
+            }
         }
     }
+
 }

@@ -1,5 +1,6 @@
 package three.stone.algorithm.leetcode;
 
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
@@ -14,13 +15,13 @@ public class _0215_KthLargestElementInArray {
 
     public int findKthLargestII(int[] nums, int k) {
         PriorityQueue<Integer> minHeap = new PriorityQueue<>();
-        for (int num : nums) {
-            if (minHeap.size() < k) {
-                minHeap.offer(num);
+        for (int i = 0; i < nums.length; i++) {
+            if (i < k) {
+                minHeap.offer(nums[i]);
             } else {
-                if (num > minHeap.peek()) {
+                if (nums[i] > minHeap.peek()) {
                     minHeap.poll();
-                    minHeap.offer(num);
+                    minHeap.offer(nums[i]);
                 }
             }
         }

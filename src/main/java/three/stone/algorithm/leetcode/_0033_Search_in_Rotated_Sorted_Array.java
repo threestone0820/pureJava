@@ -23,24 +23,19 @@ public class _0033_Search_in_Rotated_Sorted_Array {
     public static int search(int[] nums, int target) {
         int low = 0, high = nums.length - 1;
         while (low <= high) {
-            int mid = (low + high) >> 1;
-            int cur = nums[mid];
-            if (cur == target) {
+            int mid = low + (high - low) / 2;
+            int num = nums[mid];
+            if (num == target) {
                 return mid;
             }
-
-            // 旋转数组：我们先用cur和左右边界比较，（正常数组的二分查找使用cur和target比较）
-            // 来决定当前位置是处于左边的区间，还是处于右边的区间
-            if (cur >= nums[low]) {
-                // 左边的区间
-                if (target > cur || target < nums[low]) {
+            if (num >= nums[low]) {
+                if (target > num || target < nums[low]) {
                     low = mid + 1;
                 } else {
                     high = mid - 1;
                 }
             } else {
-                // 右边的区间
-                if (target < cur || target > nums[high]) {
+                if (target < num || target > nums[high]) {
                     high = mid - 1;
                 } else {
                     low = mid + 1;

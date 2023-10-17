@@ -1,7 +1,9 @@
 package three.stone.algorithm.leetcode;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.PriorityQueue;
+import java.util.Set;
 
 /**
  * You are given n projects where the ith project has a pure profit profits[i]
@@ -14,25 +16,24 @@ import java.util.PriorityQueue;
  * your final capital, and return the final maximized capital.
  */
 public class _0502_IPO {
-    public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
-        PriorityQueue<int[]> capitalHeap = new PriorityQueue<>(Comparator.comparingInt(arr -> arr[0]));
-        PriorityQueue<Integer> profitHeap = new PriorityQueue<>(Comparator.reverseOrder());
-        int result = w;
-        for (int i = 0; i < capital.length; i++) {
-            capitalHeap.offer(new int[]{capital[i], profits[i]});
-        }
 
-        for (int i = 0; i < k; i++) {
-            while (!capitalHeap.isEmpty() && w >= capitalHeap.peek()[0]) {
-                profitHeap.offer(capitalHeap.poll()[1]);
-            }
-            if (!profitHeap.isEmpty()) {
-                Integer profit = profitHeap.poll();
-                result += profit;
-                w += profit;
-            }
+    public int findMaximizedCapital(int k, int w, int[] profits, int[] capital) {
+        PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Comparator.reverseOrder());
+        PriorityQueue<int[]> minHeap = new PriorityQueue<>(Comparator.comparingInt(arr -> arr[1]));
+        int n = profits.length;
+        for (int i = 0; i < n; i++) {
+            minHeap.offer(new int[]{i, capital[i]});
         }
-        return result;
+        while (k-- > 0) {
+            while (minHeap.peek() != null && minHeap.peek()[1] <= w) {
+                maxHeap.offer(profits[minHeap.poll()[0]]);
+            }
+            if (maxHeap.isEmpty()) {
+                break;
+            }
+            w += maxHeap.poll();
+        }
+        return w;
     }
 
 }
