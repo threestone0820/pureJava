@@ -30,13 +30,11 @@ public class _0009_Palindrome_Number {
         if (x < 0) {
             return false;
         }
-
-        int reversed = 0;
-        int y = x;
-        while (x != 0) {
-            reversed = reversed * 10 + x % 10;
-            x = x / 10;
+        int y = x, reverse = 0;
+        while (x > 0) {
+            reverse = reverse * 10 + (x % 10);
+            x /= 10;
         }
-        return y == reversed;
+        return y == reverse;
     }
 }
