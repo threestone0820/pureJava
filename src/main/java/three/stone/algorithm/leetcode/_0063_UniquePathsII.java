@@ -2,30 +2,26 @@ package three.stone.algorithm.leetcode;
 
 public class _0063_UniquePathsII {
     public int uniquePathsWithObstacles(int[][] obstacleGrid) {
-        int r = obstacleGrid.length;
-        int c = obstacleGrid[0].length;
-        int[] dp = new int[c];
-        for (int i = 0; i < c; i++) {
-            if (obstacleGrid[0][i] == 0) {
-                dp[i] = 1;
-            } else {
-                while (i < c) {
-                    dp[i] = 0;
-                    i++;
-                }
-                break;
-            }
-        }
-
-        for (int i = 1; i < r; i++) {
-            for (int j = 0; j < c; j++) {
+        int m = obstacleGrid.length, n = obstacleGrid[0].length;
+        int[][] dp = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
                 if (obstacleGrid[i][j] == 1) {
-                    dp[j] = 0;
+                    dp[i][j] = 0;
+                    continue;
+                }
+
+                if (i == 0 && j == 0) {
+                    dp[i][j] = 1;
+                } else if (i == 0) {
+                    dp[i][j] = dp[i][j - 1];
+                } else if (j == 0) {
+                    dp[i][j] = dp[i - 1][j];
                 } else {
-                    dp[j] = j == 0 ? dp[j] : dp[j] + dp[j - 1];
+                    dp[i][j] = dp[i][j - 1] + dp[i - 1][j];
                 }
             }
         }
-        return dp[c - 1];
+        return dp[m - 1][n - 1];
     }
 }

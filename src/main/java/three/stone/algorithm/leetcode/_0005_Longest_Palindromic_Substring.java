@@ -37,17 +37,15 @@ public class _0005_Longest_Palindromic_Substring {
         int n = s.length();
         boolean[][] dp = new boolean[n][n];
         int start = 0, end = 0;
-        for (int i = n - 1; i >= 0; i--) {
+        for (int i = 0; i < n; i++) {
             dp[i][i] = true;
-            for (int j = i + 1; j < n; j++) {
-                if (s.charAt(i) != s.charAt(j)) {
-                    dp[i][j] = false;
-                } else {
-                    dp[i][j] = j == i + 1 || dp[i + 1][j - 1];
-                }
-                if (dp[i][j] && j - i > end - start) {
-                    start = i;
-                    end = j;
+            for (int j = 0; j < i; j++) {
+                if (s.charAt(j) == s.charAt(i) && (j + 1 == i || dp[j + 1][i - 1])) {
+                    dp[j][i] = true;
+                    if (i - j > end - start) {
+                        end = i;
+                        start = j;
+                    }
                 }
             }
         }
