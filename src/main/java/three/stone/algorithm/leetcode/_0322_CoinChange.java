@@ -27,15 +27,13 @@ public class _0322_CoinChange {
             for (int coin : coins) {
                 if (coin == i) {
                     result = 1;
-                } else if (coin < i) {
-                    if (dp.containsKey(i - coin) && dp.get(i - coin) != -1) {
-                        result = Math.min(result, dp.get(i - coin) + 1);
-                    }
+                } else if (coin < i && dp.get(i - coin) != -1) {
+                    result = Math.min(result, dp.get(i - coin) + 1);
                 }
             }
             dp.put(i, result == Integer.MAX_VALUE ? -1 : result);
         }
-        return dp.getOrDefault(amount, -1);
+        return dp.get(amount);
     }
 
 }

@@ -31,16 +31,17 @@ package three.stone.algorithm.leetcode;
  */
 public class _0300_Longest_Increasing_Subsequence {
     public int lengthOfLIS(int[] nums) {
-        int[] len = new int[nums.length];
+        int[] dp = new int[nums.length];
         int result = 0;
         for (int i = 0; i < nums.length; i++) {
-            len[i] = 1;
+            int len = 1;
             for (int j = 0; j < i; j++) {
                 if (nums[i] > nums[j]) {
-                    len[i] = Math.max(len[i], len[j] + 1);
+                    len = Math.max(dp[j] + 1, len);
                 }
             }
-            result = Math.max(len[i], result);
+            dp[i] = len;
+            result = Math.max(result, dp[i]);
         }
         return result;
     }

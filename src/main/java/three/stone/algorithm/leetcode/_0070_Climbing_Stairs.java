@@ -30,14 +30,13 @@ public class _0070_Climbing_Stairs {
         if (n <= 2) {
             return n;
         }
-
-        int first = 1, second = 2;
-        for (int i = 3; i <= n; i++) {
-            int temp = first + second;
-            first = second;
-            second = temp;
+        int i = 1, j = 2;
+        for (int k = 3; k <= n; k++) {
+            int cur = i + j;
+            i = j;
+            j = cur;
         }
-
-        return second;
+        return j;
     }
+
 }
