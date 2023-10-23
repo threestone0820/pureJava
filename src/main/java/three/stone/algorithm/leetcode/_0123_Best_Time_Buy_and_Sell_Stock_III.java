@@ -28,9 +28,26 @@ package three.stone.algorithm.leetcode;
  *
  * Input: prices = [1]
  * Output: 0
+ *
+ *  0 -> buy1 -> seller1 -> buy2 -> 0
+ *
+ *  dp[i][j]
+ *  1. dp[i][j - 1]
+ *  2. Max{ dp[i - 1][t] + prices[j] - prices[t] } = prices[i] + Max { dp[i - 1][t] - prices[t] }
+ *
  */
 public class _0123_Best_Time_Buy_and_Sell_Stock_III {
     public int maxProfit(int[] prices) {
-        return 0;
+        int n = prices.length;
+        int K = 2;
+        int[][] dp = new int[K + 1][n];
+        for (int i = 1; i <= K; i++) {
+            int curMax = -prices[0];
+            for (int j = 1; j < n; j++) {
+                dp[i][j] = Math.max(dp[i][j - 1], (prices[j] + curMax));
+                curMax = Math.max(curMax, dp[i - 1][j - 1] - prices[j]);
+            }
+        }
+        return dp[K][n - 1];
     }
 }
